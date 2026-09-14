@@ -1,0 +1,9 @@
+pandas
+numpy
+geopandas
+shapely
+folium
+matplotlib
+scikit-learn
+openpyxl
+requests
