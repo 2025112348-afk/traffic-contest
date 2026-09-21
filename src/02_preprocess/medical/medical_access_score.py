@@ -150,7 +150,7 @@ def _build_eupmyeon_key(raw_names: pd.Series):
     return keys
 
 
-def build_medical_access_score(csv_path: str, save_path: str | None = "data/processed/medical_access_score.csv"):
+def build_medical_access_score(csv_path: str, save_path: str | None = "data/processed/medical/medical_access_score.csv"):
     df = _load_csv_robust(csv_path)
     if "시점" in df.columns:
         print("시점(연도):", df["시점"].dropna().unique())
@@ -229,7 +229,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--csv", required=True, help="KOSIS 원자료 CSV 경로")
-    parser.add_argument("--out", default="data/processed/medical_access_score.csv")
+    parser.add_argument("--out", default="data/processed/medical/medical_access_score.csv")
     args = parser.parse_args()
 
     out = build_medical_access_score(args.csv, save_path=args.out)

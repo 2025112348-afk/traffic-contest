@@ -11,9 +11,9 @@
 python plot_facility_map.py --demo
 
 # 실제 CSV로 실행 (건강보험심사평가원 병원정보서비스 등)
-python plot_facility_map.py --csv data/raw/hira_hospitals.csv \
+python plot_facility_map.py --csv data/raw/medical/hira_hospitals.csv \
     --title "의료시설은 어디에 있을까?" --source "2026.9 기준 · 건강보험심사평가원" \
-    --out outputs/figures/medical_map.png
+    --out outputs/figures/medical/medical_map.png
 ```
 
 Colab에서는 `google.colab.files.upload()`로 CSV를 올린 뒤 `plot_facility_map(파일명, title=...)`를 바로 호출하면 됩니다. 위경도·시도명 컬럼명이 다른 데이터셋(예: 다른 기관 CSV)이어도 흔한 컬럼명 후보를 자동으로 탐색합니다.

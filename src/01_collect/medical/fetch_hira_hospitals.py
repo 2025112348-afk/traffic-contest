@@ -80,7 +80,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--service-key", required=True, help="data.go.kr 디코딩(Decoding) 인증키")
-    parser.add_argument("--out", default="data/raw/hira_hospitals.csv")
+    parser.add_argument("--out", default="data/raw/medical/hira_hospitals.csv")
     args = parser.parse_args()
 
     out_df = fetch_all_hospitals(args.service_key)
