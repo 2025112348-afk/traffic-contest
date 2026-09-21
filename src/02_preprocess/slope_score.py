@@ -42,8 +42,17 @@ TARGET_CRS = "EPSG:5179"  # 미터 단위, 한국 표준 좌표계
 
 
 def _reproject_dem(dem_path: str, out_path: str) -> tuple[str, float | None]:
+    """1단계: 위경도(도) 좌표계 DEM을 미터 단위(EPSG:5179)로 재투영한다.
+
+    원본 그대로 경사도를 계산하면 "옆 픽셀까지의 거리"를 도(度) 단위로 재게 되는데,
+    위도가 높을수록(북쪽일수록) 같은 1도가 나타내는 실제 거리(m)가 짧아진다.
+    그래서 위치에 따라 경사도가 실제보다 크거나 작게 왜곡된다. 미리 미터 단위
+    좌표계로 바꿔두면 모든 픽셀이 "진짜 30m × 30m"를 나타내게 되어 이 오차가 없어진다.
+    """
     with rasterio.open(dem_path) as src:
         nodata = src.nodata
+        # calculate_default_transform: 목표 좌표계에서 원본 영역을 그대로 담을 수 있는
+        # 새 격자(가로/세로 픽셀 수, 변환행렬)를 자동으로 계산해준다.
         transform, width, height = calculate_default_transform(
             src.crs, TARGET_CRS, src.width, src.height, *src.bounds
         )
@@ -51,6 +60,8 @@ def _reproject_dem(dem_path: str, out_path: str) -> tuple[str, float | None]:
         profile.update(crs=TARGET_CRS, transform=transform, width=width, height=height)
 
         with rasterio.open(out_path, "w", **profile) as dst:
+            # 픽셀 하나하나를 새 좌표계 위치로 옮기면서 값을 보간(bilinear)한다.
+            # NoData(바다·범위 밖)는 계산에서 제외되도록 src/dst 양쪽에 지정한다.
             reproject(
                 source=rasterio.band(src, 1),
                 destination=rasterio.band(dst, 1),
@@ -66,6 +77,13 @@ def _reproject_dem(dem_path: str, out_path: str) -> tuple[str, float | None]:
 
 
 def _compute_slope(reproj_dem_path: str, slope_path: str) -> tuple[str, float | None]:
+    """2단계: 미터 단위 DEM에서 픽셀별 경사도(도, degree)를 계산한다.
+
+    gdaldem slope는 각 픽셀에서 주변 8개 픽셀의 고도 차이로 기울기를 구하는
+    표준 알고리즘(Horn's algorithm)을 쓴다. 이미 1단계에서 미터 단위로 바꿔뒀기
+    때문에 "고도차(m) / 픽셀간 거리(m)"가 정확하게 계산되어 degree로 변환된다.
+    -compute_edges: 이미지 맨 가장자리 픽셀도 (이웃이 일부 없어도) 계산에 포함시킨다.
+    """
     result = subprocess.run(
         ["gdaldem", "slope", reproj_dem_path, slope_path, "-compute_edges"],
         capture_output=True, text=True,
@@ -78,6 +96,8 @@ def _compute_slope(reproj_dem_path: str, slope_path: str) -> tuple[str, float | 
 
 
 def _make_key(row) -> str:
+    """다른 지표(의료접근성 등)와 합칠 수 있도록 "시도 시군구 읍면동" 형태로 키를 만든다.
+    세종특별자치시처럼 시군구가 없는 경우는 시도+읍면동만으로 키를 만든다."""
     parts = [row["sidonm"]]
     if row.get("sggnm") and str(row["sggnm"]) != "None":
         parts.append(row["sggnm"])
@@ -101,7 +121,13 @@ def build_slope_score(
     print(f"   완료: {slope_path}")
 
     print("3/3 읍면동별 평균 경사도 집계 중...")
+    # 읍면동 경계도 슬로프 래스터와 같은 좌표계(EPSG:5179)로 맞춰야
+    # 폴리곤과 픽셀 위치가 정확히 겹쳐진다.
     gdf = gpd.read_file(emd_geojson_path).to_crs(TARGET_CRS)
+
+    # zonal statistics: 폴리곤(읍면동) 하나마다 그 경계 안에 들어오는 모든
+    # 슬로프 픽셀을 모아서 평균·최대·픽셀 개수를 계산한다.
+    # 예: 삼척시 가곡면 폴리곤 안의 수만 개 30m 픽셀 경사도값 → 평균 28.5도
     stats = zonal_stats(gdf.geometry, slope_path, stats=["mean", "max", "count"], nodata=slope_nodata)
 
     gdf["평균경사도"] = [s["mean"] for s in stats]
@@ -109,6 +135,9 @@ def build_slope_score(
     gdf["픽셀수"] = [s["count"] for s in stats]
     gdf["읍면_key"] = gdf.apply(_make_key, axis=1)
 
+    # min-max 정규화: 전국에서 가장 평평한 읍면동=0, 가장 가파른 읍면동=1이 되도록
+    # 0~1 스케일로 바꾼다. 값이 클수록(1에 가까울수록) 지형이 험해서 이동이
+    # 어렵다는 뜻 — 다른 취약점수들(의료접근성 등)과 같은 방향으로 맞춘 것이다.
     valid_mean = gdf["평균경사도"].dropna()
     gdf["지형장벽_취약점수"] = (gdf["평균경사도"] - valid_mean.min()) / (valid_mean.max() - valid_mean.min())
 
