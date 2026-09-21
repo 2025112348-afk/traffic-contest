@@ -11,7 +11,7 @@ Colab에서 그대로 실행 가능. 의료시설(HIRA 병원정보서비스)뿐
     plot_facility_map('업로드한파일명.csv', title='의료시설은 어디에 있을까?')
 
 로컬 실행:
-    python plot_facility_map.py --csv data/raw/hira_hospitals.csv --out outputs/figures/medical_map.png
+    python plot_facility_map.py --csv data/raw/medical/hira_hospitals.csv --out outputs/figures/medical/medical_map.png
 """
 
 import argparse

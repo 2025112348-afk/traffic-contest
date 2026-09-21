@@ -157,7 +157,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--dem", required=True, help="GEDTM30 클립 GeoTIFF 경로")
     parser.add_argument("--emd", required=True, help="읍면동 경계 GeoJSON 경로")
-    parser.add_argument("--out", default="data/processed/slope_score.csv")
+    parser.add_argument("--out", default="data/processed/terrain/slope_score.csv")
     args = parser.parse_args()
 
     out = build_slope_score(args.dem, args.emd, save_path=args.out)
