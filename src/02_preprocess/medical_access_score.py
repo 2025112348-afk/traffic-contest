@@ -26,13 +26,25 @@ Colab 사용법:
      걸리는가"를 근사한 값이다.
 3) 심각도 보조지표 = 20분 이상 걸리는 행정리 비율 (20~29~60분이상 구간 합 / 총행정리수)
    → 평균값이 완화시켜버리는 "많이 늦는 소수"를 따로 보여주기 위함.
-4) 핵심 3종(약국·보건소(지소포함)·일반병·의원)의 가중평균 소요시간을
-   단순평균해 "1차의료_접근성(분)"을 만들고, min-max 정규화해
-   0~1의 "의료접근성_취약점수"(높을수록 나쁨)로 변환한다 — 기존
-   이동격차지수(팀원 노트북)의 점수 방향과 동일하게 맞췄다.
-5) 한방병·의원 / 치과병·의원은 핵심 점수에 넣지 않고 별도 컬럼으로만
-   남겨둔다 — 일상적 1차의료(내과·소아과 등)만큼 보편적 필수는 아니라고
-   보되, 참고 지표로는 계속 계산해둔다(제외가 아니라 "보조" 취급).
+4) 시설을 "명확하게 분류 가능한 것"과 "표 상 1차/2차가 섞여서 분리 불가능한 것"으로
+   나눠서 쓴다 (의료법 제3조 의료기관 종별 기준).
+   - 명확 1차 (TIER1_CLEAR): 약국, 보건진료소, 보건소(지소포함)
+     → 약국은 애초에 의원/병원 종별 개념이 없고, 보건진료소·보건소는
+       지역보건법/농어촌 등 보건의료를 위한 특별조치법상 처음부터 1차
+       공공보건의료로 설계된 시설이라 혼재 여지가 없다.
+   - 명확 2차 (TIER2_CLEAR): 종합병원
+     → 의료법상 병원급/상급종합병원, 입원·중증 중심이라 1차와 섞일 수 없다.
+   - 혼재 (MIXED_TIER, 참고용): 일반병·의원, 한방병·의원, 치과병·의원
+     → KOSIS 원자료 컬럼 자체가 "병원"과 "의원"을 한데 묶어놔서, 이
+       표만으로는 1차/2차를 분리할 수 없다. 핵심 점수에는 넣지 않고
+       참고 컬럼으로만 남긴다.
+5) TIER1_CLEAR 각 시설의 가중평균 소요시간을 단순평균해 "1차의료_평균소요분"을
+   만들고, TIER2_CLEAR(종합병원)가 원자료에 있으면 같은 방식으로
+   "2차의료_평균소요분"도 만든다. 각각 min-max 정규화해 0~1의
+   "1차의료_취약점수" / "2차의료_취약점수"(높을수록 나쁨)로 변환한다 —
+   기존 이동격차지수(팀원 노트북)의 점수 방향과 동일하게 맞췄다.
+   ※ 종합병원 컬럼이 없는 CSV로 돌리면 2차 점수는 자동으로 건너뛴다
+     (전체 시설을 포함해 다시 받은 CSV가 있어야 2차 점수까지 나온다).
 """
 
 import re
@@ -56,9 +68,10 @@ BUCKET_MINUTES = {
 }
 BUCKET_ORDER = list(BUCKET_MINUTES.keys())
 
-# 핵심 3종(1차의료) — 접근성 점수의 주 변수. 한방/치과는 보조로만 계산.
-CORE_FACILITIES = ["약국", "보건소", "일반병의원"]
-SUPPLEMENTARY_FACILITIES = ["한방병의원", "치과병의원"]
+# 명확하게 분류 가능한 시설만 핵심 점수에 쓴다 (의료법 제3조 기준).
+TIER1_CLEAR = ["약국", "보건진료소", "보건소"]   # 명확 1차
+TIER2_CLEAR = ["종합병원"]                        # 명확 2차
+MIXED_TIER = ["일반병의원", "한방병의원", "치과병의원"]  # 1차/2차 혼재 — 참고용
 
 SIDO_NAMES = {
     "서울특별시", "부산광역시", "대구광역시", "인천광역시", "광주광역시", "대전광역시", "울산광역시",
@@ -75,6 +88,7 @@ FACILITY_NAME_MAP = {
     "한방병?의원": "한방병의원",
     "일반병?의원": "일반병의원",
     "치과병?의원": "치과병의원",
+    "종합병원": "종합병원",
 }
 
 
@@ -178,16 +192,27 @@ def build_medical_access_score(csv_path: str, save_path: str | None = "data/proc
         result[f"{facility}_평균소요분"] = avg_minutes
         result[f"{facility}_20분이상비율"] = ratio_over20
 
-    # 핵심 3종(1차의료) 결합 점수
-    core_cols = [f"{f}_평균소요분" for f in CORE_FACILITIES]
-    result["1차의료_평균소요분"] = result[core_cols].mean(axis=1)
+    present_facilities = {block["facility"] for block in blocks}
 
     def minmax(s):
         return (s - s.min()) / (s.max() - s.min())
 
-    result["의료접근성_취약점수"] = minmax(result["1차의료_평균소요분"])  # 높을수록(1에 가까울수록) 접근성 나쁨
+    def add_tier_score(tier_name: str, facilities: list[str]):
+        have = [f for f in facilities if f in present_facilities]
+        missing = [f for f in facilities if f not in present_facilities]
+        if missing:
+            print(f"[알림] {tier_name}: 원자료에 없어서 건너뜀 → {missing}")
+        if not have:
+            return
+        cols = [f"{f}_평균소요분" for f in have]
+        result[f"{tier_name}_평균소요분"] = result[cols].mean(axis=1)
+        result[f"{tier_name}_취약점수"] = minmax(result[f"{tier_name}_평균소요분"])
 
-    result = result.sort_values("의료접근성_취약점수", ascending=False).reset_index(drop=True)
+    add_tier_score("1차의료", TIER1_CLEAR)
+    add_tier_score("2차의료", TIER2_CLEAR)
+
+    sort_col = "1차의료_취약점수" if "1차의료_취약점수" in result.columns else result.columns[-1]
+    result = result.sort_values(sort_col, ascending=False).reset_index(drop=True)
 
     if save_path:
         Path(save_path).parent.mkdir(parents=True, exist_ok=True)
