@@ -1,0 +1,19 @@
+{
+  "source": "대중교통GTFS(2025년 기준)/202503_GTFS_DataSet/stops.txt",
+  "rows": 215409,
+  "missing_cells": 0,
+  "duplicate_stop_ids": 0,
+  "duplicate_coordinate_rows_after_first": 4282,
+  "invalid_coordinates": 0,
+  "removed_rows": 0,
+  "latitude_range": [
+    33.1223721,
+    38.53952
+  ],
+  "longitude_range": [
+    124.61918,
+    131.867468
+  ],
+  "background_source": "C:\\Users\\전가연\\OneDrive\\Desktop\\traffic\\.venv\\Lib\\site-packages\\pyogrio\\tests\\fixtures\\naturalearth_lowres\\naturalearth_lowres.shp",
+  "background_crs": "EPSG:4326"
+}

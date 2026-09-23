@@ -1,0 +1,10 @@
+from pathlib import Path
+import pandas as pd, geopandas as gpd, matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+plt.rcParams['font.family']='Malgun Gothic'; plt.rcParams['axes.unicode_minus']=False
+R=Path(__file__).resolve().parents[2]; O=Path(__file__).resolve().parent
+p=pd.read_csv(R/'visualizations/09_population_province_map/dong_age_population.csv'); p.columns=['province','dong','population','elderly','aging']
+g=gpd.read_file(R/'N3A_G0110000.shp',encoding='euc-kr').set_crs(5179,allow_override=True); g['province']=g.BJCD.astype(str).str[:2].map({'11':'서울특별시','26':'부산광역시','27':'대구광역시','28':'인천광역시','29':'광주광역시','30':'대전광역시','31':'울산광역시','36':'세종특별자치시','41':'경기도','51':'강원특별자치도','43':'충청북도','44':'충청남도','52':'전북특별자치도','46':'전라남도','47':'경상북도','48':'경상남도','50':'제주특별자치도'}); g['dong']=g.NAME.str.strip(); g=g.merge(p,on=['province','dong'],how='inner')
+s=pd.read_csv(R/'visualizations/07_bus_stops_2025/bus_stops.csv'); q=gpd.GeoDataFrame(s,geometry=gpd.points_from_xy(s.stop_lon,s.stop_lat),crs=4326).to_crs(5179); j=gpd.sjoin(q,g[['province','dong','geometry']],predicate='within',how='left'); c=j.groupby(['province','dong']).size().rename('stops').reset_index(); m=g.merge(c,on=['province','dong'],how='left'); m.stops=m.stops.fillna(0); m['per10k']=m.stops/m.population*10000; m[['province','dong','population','stops','per10k']].to_csv(O/'stop_supply_by_dong.csv',index=False,encoding='utf-8-sig')
+fig,ax=plt.subplots(figsize=(12,10),facecolor='#f8fafc'); lo,hi=m.per10k.quantile([.02,.98]); m.plot(column='per10k',ax=ax,cmap='YlGnBu',vmin=lo,vmax=hi,edgecolor='white',linewidth=.05,legend=True,legend_kwds={'label':'인구 1만 명당 정류장 수','shrink':.7}); ax.set_axis_off(); fig.suptitle('인구 대비 버스 정류장 공급 격차',fontsize=22); fig.text(.07,.035,f'정류장 공간조인 미매칭 {j.province.isna().sum():,}개 · 색상 범위는 2~98 백분위',fontsize=9); fig.savefig(O/'stop_supply_map.png',dpi=240,bbox_inches='tight'); plt.close(fig)

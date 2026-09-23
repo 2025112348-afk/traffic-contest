@@ -1,0 +1,82 @@
+{
+  "source": "2024-OD-PSN-MOD-10 전국지역간 주수단 OD(250존)(2023-2050)/5. OD/전국_2023년~2050년 주수단별OD(250).xlsx",
+  "checks": [
+    {
+      "year": 2023,
+      "sheet": "2023_주수단OD",
+      "rows": 62500,
+      "missing": 0,
+      "duplicate_pairs": 0,
+      "negative": 0,
+      "same_zone_rows": 250,
+      "max_row_error": 2.842170943040401e-14,
+      "max_summary_error": 2.9802322387695312e-08
+    },
+    {
+      "year": 2025,
+      "sheet": "2025_주수단OD",
+      "rows": 62500,
+      "missing": 0,
+      "duplicate_pairs": 0,
+      "negative": 0,
+      "same_zone_rows": 250,
+      "max_row_error": 3.552713678800501e-15,
+      "max_summary_error": 2.9802322387695312e-08
+    },
+    {
+      "year": 2030,
+      "sheet": "2030_주수단OD",
+      "rows": 62500,
+      "missing": 0,
+      "duplicate_pairs": 0,
+      "negative": 0,
+      "same_zone_rows": 250,
+      "max_row_error": 0.0,
+      "max_summary_error": 2.9802322387695312e-08
+    },
+    {
+      "year": 2035,
+      "sheet": "2035_주수단OD",
+      "rows": 62500,
+      "missing": 0,
+      "duplicate_pairs": 0,
+      "negative": 0,
+      "same_zone_rows": 250,
+      "max_row_error": 9.094947017729282e-13,
+      "max_summary_error": 1.4901161193847656e-08
+    },
+    {
+      "year": 2040,
+      "sheet": "2040_주수단OD",
+      "rows": 62500,
+      "missing": 0,
+      "duplicate_pairs": 0,
+      "negative": 0,
+      "same_zone_rows": 250,
+      "max_row_error": 3.552713678800501e-15,
+      "max_summary_error": 2.9802322387695312e-08
+    },
+    {
+      "year": 2045,
+      "sheet": "2045_주수단OD",
+      "rows": 62500,
+      "missing": 0,
+      "duplicate_pairs": 0,
+      "negative": 0,
+      "same_zone_rows": 250,
+      "max_row_error": 2.842170943040401e-14,
+      "max_summary_error": 1.4901161193847656e-08
+    },
+    {
+      "year": 2050,
+      "sheet": "2050_주수단OD",
+      "rows": 62500,
+      "missing": 0,
+      "duplicate_pairs": 0,
+      "negative": 0,
+      "same_zone_rows": 250,
+      "max_row_error": 2.842170943040401e-14,
+      "max_summary_error": 7.450580596923828e-09
+    }
+  ]
+}

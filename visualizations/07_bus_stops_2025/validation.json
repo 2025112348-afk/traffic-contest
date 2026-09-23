@@ -1,0 +1,19 @@
+{
+  "source": "visualizations/07_bus_stops_2025/bus_stops.csv",
+  "rows": 213625,
+  "missing_cells": 0,
+  "duplicate_stop_ids": 0,
+  "duplicate_coordinate_rows_after_first": 4276,
+  "invalid_coordinates": 0,
+  "removed_rows": 0,
+  "latitude_range": [
+    33.208351,
+    38.53952
+  ],
+  "longitude_range": [
+    124.61918,
+    130.915536
+  ],
+  "background_source": "C:\\Users\\전가연\\OneDrive\\Desktop\\traffic\\.venv\\Lib\\site-packages\\pyogrio\\tests\\fixtures\\naturalearth_lowres\\naturalearth_lowres.shp",
+  "background_crs": "EPSG:4326"
+}

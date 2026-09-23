@@ -1,0 +1,20 @@
+{
+  "source": "2024-OD-PSN-MOD-10 전국지역간 주수단 OD(250존)(2023-2050)/3. 사회경제지표/전국지역간_사회경제지표.xlsx",
+  "sheet": "총인구",
+  "year_column": "2023년",
+  "zone_source": "2024-OD-PSN-MOD-10 전국지역간 주수단 OD(250존)(2023-2050)/1. 존체계/250 존체계.xlsx",
+  "rows": 249,
+  "expected_zones": 250,
+  "missing_cells_in_existing_rows": 0,
+  "duplicate_zone_codes": 0,
+  "negative_population": 0,
+  "fractional_population_rows": 157,
+  "missing_regions": [
+    {
+      "시도": "경상북도",
+      "시군구": "울릉군",
+      "존코드": 225
+    }
+  ],
+  "included_total": 50865615.93380031
+}

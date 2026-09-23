@@ -1,0 +1,83 @@
+[
+  {
+    "year": 2019,
+    "source": "2020-OD-PSN-MOD-10 전국지역간 주수단 OD(250존)(2019-2050)_230608/3. 사회경제지표/전국지역간_사회경제지표.xlsx",
+    "zone_source": "2020-OD-PSN-MOD-10 전국지역간 주수단 OD(250존)(2019-2050)_230608/1. 존체계/250 존체계.xlsx",
+    "raw_rows": 249,
+    "included_rows": 249,
+    "expected_zones": 250,
+    "missing_zone_rows": [
+      {
+        "대존": "경상북도",
+        "소존": "울릉군",
+        "250존체계": 225
+      }
+    ],
+    "excluded_ulleung_rows": [],
+    "gunwi_transferred_to_daegu": 21163.6200590117,
+    "missing_cells": 0,
+    "duplicates": 0,
+    "negative_values": 0
+  },
+  {
+    "year": 2022,
+    "source": "2023-OD-PSN-MOD-10 전국지역간 주수단 OD(250존)(2022-2050)/3. 사회경제지표/전국지역간 장래사회경제지표.xlsx",
+    "zone_source": "2023-OD-PSN-MOD-10 전국지역간 주수단 OD(250존)(2022-2050)/1. 존체계/250 존체계.xlsx",
+    "raw_rows": 250,
+    "included_rows": 249,
+    "expected_zones": 250,
+    "missing_zone_rows": [],
+    "excluded_ulleung_rows": [
+      {
+        "원본시도": "경상북도",
+        "시군구": "울릉군",
+        "존코드": 225,
+        "인구_명": 0.0
+      }
+    ],
+    "gunwi_transferred_to_daegu": 21452.2,
+    "missing_cells": 0,
+    "duplicates": 0,
+    "negative_values": 0
+  },
+  {
+    "year": 2023,
+    "source": "2024-OD-PSN-MOD-10 전국지역간 주수단 OD(250존)(2023-2050)/3. 사회경제지표/전국지역간_사회경제지표.xlsx",
+    "zone_source": "2024-OD-PSN-MOD-10 전국지역간 주수단 OD(250존)(2023-2050)/1. 존체계/250 존체계.xlsx",
+    "raw_rows": 249,
+    "included_rows": 249,
+    "expected_zones": 250,
+    "missing_zone_rows": [
+      {
+        "대존": "경상북도",
+        "소존": "울릉군",
+        "250존체계": 225
+      }
+    ],
+    "excluded_ulleung_rows": [],
+    "gunwi_transferred_to_daegu": 0.0,
+    "missing_cells": 0,
+    "duplicates": 0,
+    "negative_values": 0
+  },
+  {
+    "year": 2024,
+    "source": "2025-OD-PSN-MOD-10 전국지역간 주수단 OD(252존)(2024-2055)/2025-OD-PSN-MOD-10 전국지역간 주수단 OD(252존)(2024-2055)/3. 사회경제지표/전국지역간_사회경제지표.xlsx",
+    "zone_source": "2025-OD-PSN-MOD-10 전국지역간 주수단 OD(252존)(2024-2055)/2025-OD-PSN-MOD-10 전국지역간 주수단 OD(252존)(2024-2055)/1. 존체계/존체계.xlsx",
+    "raw_rows": 251,
+    "included_rows": 251,
+    "expected_zones": 252,
+    "missing_zone_rows": [
+      {
+        "대존": "경상북도",
+        "소존": "울릉군",
+        "252존체계": 227
+      }
+    ],
+    "excluded_ulleung_rows": [],
+    "gunwi_transferred_to_daegu": 0.0,
+    "missing_cells": 0,
+    "duplicates": 0,
+    "negative_values": 0
+  }
+]

@@ -1,0 +1,17 @@
+{
+  "source": "2025-OD-PSN-MOD-10 전국지역간 주수단 OD(252존)(2024-2055)/2025-OD-PSN-MOD-10 전국지역간 주수단 OD(252존)(2024-2055)/4. OD/전국_2024년~2055년 주수단별OD(252).xlsx",
+  "sheet": "2024_주수단OD",
+  "documentation": "2025-OD-PSN-MOD-10 전국지역간 주수단 OD(252존)(2024-2055)/2025-OD-PSN-MOD-10 전국지역간 주수단 OD(252존)(2024-2055)/2. 설명자료/2025년_전국 교통수요 분석 기초자료 설명자료_260903.hwpx",
+  "rows": 63504,
+  "origin_zones": 252,
+  "destination_zones": 252,
+  "missing_cells": 0,
+  "duplicate_od_pairs": 0,
+  "negative_values": 0,
+  "same_zone_rows": 252,
+  "same_zone_trips": 57277941.74698598,
+  "different_zone_trips": 46309627.220840305,
+  "total_trips": 103587568.96782629,
+  "max_row_total_error": 0.0,
+  "max_reference_error": 1.4901161193847656e-08
+}
