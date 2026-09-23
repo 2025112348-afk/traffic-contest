@@ -47,3 +47,8 @@
 - `missing_regions.csv`: 원본 인구 시트에 없는 지역.
 - `validation.json`: 검증 결과와 출처.
 - 실행: `.venv/Scripts/python.exe visualizations/04_population_2023/make_chart.py`
+
+
+
+
+

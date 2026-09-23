@@ -42,3 +42,8 @@
 - 작업 폴더에서 실행: `.venv\Scripts\python.exe visualizations/01_od_2024/make_chart.py`
 
 다음 단계에서는 동일 존 내부 통행을 제외한 뒤 이 그래프와 비교할 수 있습니다.
+
+
+
+
+

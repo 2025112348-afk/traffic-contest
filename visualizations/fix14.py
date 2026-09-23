@@ -1,0 +1,5 @@
+﻿from pathlib import Path
+import pandas as pd,geopandas as gpd,matplotlib
+matplotlib.use('Agg'); import matplotlib.pyplot as plt
+from matplotlib import font_manager
+root=Path('.'); fp=font_manager.FontProperties(fname=r'C:\Windows\Fonts\malgun.ttf'); a=pd.read_csv(root/'visualizations/14_dong_supply/dong_supply.csv'); a['BJCD']=a.BJCD.astype(str).str.replace(r'\.0$','',regex=True).str.zfill(10); poly=gpd.read_file('N3A_G0110000.shp',encoding='euc-kr').set_crs(5179,allow_override=True)[['BJCD','geometry']]; poly['BJCD']=poly.BJCD.astype(str).str.zfill(10); m=poly.merge(a[['BJCD','per_10k']],on='BJCD',how='left'); fig,ax=plt.subplots(figsize=(12,12)); m.plot(column='per_10k',cmap='Blues',linewidth=.1,edgecolor='white',legend=True,ax=ax,missing_kwds={'color':'#eeeeee'},legend_kwds={'label':'정류장당 평일 운행횟수','shrink':.55}); ax.set_title('읍면동별 버스 공급량',fontproperties=fp,fontsize=20); ax.axis('off'); fig.tight_layout(); fig.savefig(root/'visualizations/14_dong_supply/dong_supply_map.png',dpi=220,bbox_inches='tight'); print('matched',m.per_10k.notna().sum())

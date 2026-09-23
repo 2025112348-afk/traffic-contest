@@ -31,3 +31,8 @@
 - `stops_clean.csv`: 검증한 전체 정차 지점.
 - `validation.json`: 원본 경로와 검증 수치.
 - 재실행: `.venv/Scripts/python.exe visualizations/06_gtfs_stops_2025/make_map.py`.
+
+
+
+
+

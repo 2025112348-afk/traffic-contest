@@ -52,3 +52,8 @@
 - `forecast_totals.csv`: 연도별 수단 합계와 전체 합계.
 - `validation.json`: 사용한 원본 경로와 연도별 검증 결과.
 - 실행: `.venv/Scripts/python.exe visualizations/03_od_forecast_2023/make_chart.py`
+
+
+
+
+

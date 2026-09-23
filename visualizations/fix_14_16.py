@@ -1,0 +1,9 @@
+﻿from pathlib import Path
+import pandas as pd, geopandas as gpd, matplotlib
+matplotlib.use('Agg'); import matplotlib.pyplot as plt
+from matplotlib import font_manager
+root=Path('.'); fp=font_manager.FontProperties(fname=r'C:\Windows\Fonts\malgun.ttf'); plt.rcParams['font.family']='Malgun Gothic'
+# 14 polygon map
+p=root/'visualizations/14_dong_supply/dong_supply.csv'; a=pd.read_csv(p); poly=gpd.read_file('N3A_G0110000.shp',encoding='euc-kr').set_crs(5179,allow_override=True)[['BJCD','NAME','geometry']]; a['BJCD']=a.BJCD.astype(str); m=poly.merge(a[['BJCD','per_10k']],on='BJCD',how='left'); fig,ax=plt.subplots(figsize=(12,12)); m.plot(column='per_10k',cmap='Blues',linewidth=.15,edgecolor='white',legend=True,ax=ax,missing_kwds={'color':'#eeeeee'},legend_kwds={'label':'정류장당 평일 운행횟수','shrink':.55}); ax.set_title('읍면동별 버스 공급량',fontproperties=fp,fontsize=20); ax.axis('off'); fig.tight_layout(); fig.savefig(root/'visualizations/14_dong_supply/dong_supply_map.png',dpi=220,bbox_inches='tight')
+# 16 meaningful chart
+s=pd.read_csv(root/'bus_supply/bus_data/processed/gtfs_stop_supply_2025.csv'); q=s.groupby('day_type',as_index=False).agg(stops=('stop_id','nunique'),departures=('departures','sum'),mean_headway=('headway_min','mean')); q['departures_per_stop']=q.departures/q.stops; q.to_csv(root/'visualizations/16_day_supply/day_supply.csv',index=False,encoding='utf-8-sig'); fig,axs=plt.subplots(1,2,figsize=(13,5)); axs[0].bar(q.day_type,q.departures_per_stop,color=['#2878a8','#f2a541','#d95f59']); axs[0].set_title('정류장 1곳당 평균 운행횟수',fontproperties=fp,fontsize=16); axs[0].set_ylabel('운행횟수',fontproperties=fp); axs[1].bar(q.day_type,q.mean_headway,color=['#2878a8','#f2a541','#d95f59']); axs[1].set_title('평균 배차간격',fontproperties=fp,fontsize=16); axs[1].set_ylabel('분',fontproperties=fp); fig.tight_layout(); fig.savefig(root/'visualizations/16_day_supply/day_supply.png',dpi=220)

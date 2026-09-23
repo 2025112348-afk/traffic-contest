@@ -1,0 +1,8 @@
+﻿from pathlib import Path
+import pandas as pd, matplotlib
+matplotlib.use('Agg'); import matplotlib.pyplot as plt
+from matplotlib import font_manager
+root=Path('.'); fp=font_manager.FontProperties(fname=r'C:\Windows\Fonts\malgun.ttf'); plt.rcParams['font.family']='Malgun Gothic'
+s=pd.read_csv(root/'bus_supply/bus_data/processed/gtfs_stop_supply_2025.csv'); stopfile=list(root.glob('대중교통GTFS*2025*/*DataSet/stops.txt'))[0]; st=pd.read_csv(stopfile,dtype=str,usecols=['stop_id','stop_lat','stop_lon']); s=s.merge(st,on='stop_id',how='left'); w=s[(s.day_type=='weekday')&s.headway_min.notna()].copy();
+fig,ax=plt.subplots(figsize=(10,12)); sc=ax.scatter(w.stop_lon.astype(float),w.stop_lat.astype(float),c=w.headway_min.clip(0,120),s=2,cmap='YlOrRd',alpha=.3); ax.set_title('정류장별 평일 평균 배차간격',fontproperties=fp,fontsize=20); ax.set_xlabel('경도'); ax.set_ylabel('위도'); fig.colorbar(sc,ax=ax); fig.tight_layout(); fig.savefig(root/'visualizations/13_stop_headway/headway_map.png',dpi=180); w[['stop_id','routes','departures','headway_min']].to_csv(root/'visualizations/13_stop_headway/headway_data.csv',index=False,encoding='utf-8-sig')
+q=s.groupby('day_type',as_index=False).agg(departures=('departures','sum'),stops=('stop_id','nunique')); fig,ax=plt.subplots(figsize=(8,5)); ax.bar(q.day_type,q.departures,color=['#2878a8','#f2a541','#d95f59']); ax.set_title('요일별 버스 운행 공급량',fontproperties=fp,fontsize=18); ax.set_ylabel('운행 횟수 합계',fontproperties=fp); fig.tight_layout(); fig.savefig(root/'visualizations/16_day_supply/day_supply.png',dpi=200); q.to_csv(root/'visualizations/16_day_supply/day_supply.csv',index=False,encoding='utf-8-sig')

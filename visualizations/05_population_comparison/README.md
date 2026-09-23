@@ -56,3 +56,8 @@
 - `population_comparable_regions.csv`: 원본 시도, 비교 시도, 지역별 수치와 연도.
 - `validation.json`: 출처·누락·범위 조정 기록.
 - 실행: `.venv/Scripts/python.exe visualizations/05_population_comparison/make_chart.py`
+
+
+
+
+
