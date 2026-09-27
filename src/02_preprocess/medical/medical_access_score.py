@@ -47,6 +47,10 @@ Colab 사용법:
    기존 이동격차지수(팀원 노트북)의 점수 방향과 동일하게 맞췄다.
    ※ 종합병원 컬럼이 없는 CSV로 돌리면 2차 점수는 자동으로 건너뛴다
      (전체 시설을 포함해 다시 받은 CSV가 있어야 2차 점수까지 나온다).
+6) 1차·2차 점수를 "의료시설_취약점수" 하나로 합친다(0.4×1차 + 0.6×2차,
+   2차 비중을 더 높게 — 종합병원 부재가 더 심각한 문제라는 판단).
+   숫자는 예시이며 팀에서 정확한 비율을 정하면 됨(코드 상단 add_tier_score
+   호출 다음 줄의 W1, W2만 바꾸면 전체가 다시 계산된다).
 """
 
 import re
@@ -213,7 +217,17 @@ def build_medical_access_score(csv_path: str, save_path: str | None = "data/proc
     add_tier_score("1차의료", TIER1_CLEAR)
     add_tier_score("2차의료", TIER2_CLEAR)
 
-    sort_col = "1차의료_취약점수" if "1차의료_취약점수" in result.columns else result.columns[-1]
+    # 6) 1차·2차를 하나의 "의료시설_취약점수"로 합친다. 2차(종합병원)는 원자료에
+    #    없으면 건너뛰므로, 둘 다 있을 때만 합성 점수를 만든다.
+    #    가중치(0.4/0.6)는 예시값 — 종합병원 접근성을 더 급한 문제로 볼지는
+    #    팀 논의로 정하고, 여기 숫자만 바꾸면 전체가 다시 계산된다.
+    if "1차의료_취약점수" in result.columns and "2차의료_취약점수" in result.columns:
+        W1, W2 = 0.4, 0.6
+        result["의료시설_취약점수"] = W1 * result["1차의료_취약점수"] + W2 * result["2차의료_취약점수"]
+
+    sort_col = "의료시설_취약점수" if "의료시설_취약점수" in result.columns else (
+        "1차의료_취약점수" if "1차의료_취약점수" in result.columns else result.columns[-1]
+    )
     result = result.sort_values(sort_col, ascending=False).reset_index(drop=True)
 
     if save_path:
