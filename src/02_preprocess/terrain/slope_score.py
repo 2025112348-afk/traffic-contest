@@ -22,6 +22,12 @@
    기존 이동격차지수·의료접근성 점수와 같은 방향으로 맞췄다.
 5) 서울 포함 전국 읍면동을 대상으로 계산한다 — 서울 제외 여부는 다른 지표와 합칠 때
    최종적으로 결정한다(이 스크립트 단독으로는 필터링하지 않음).
+6) 섬 판정(GIS 방식): 모든 읍면동 폴리곤을 하나로 합친(union) 뒤 서로 안 붙어있는
+   땅덩어리(연결요소)로 다시 쪼갠다 — 폴리곤 경계가 바다로 끊겨 있으면 자동으로
+   별개 덩어리가 된다. 각 읍면동에 "섬_컴포넌트" 번호만 매겨서 CSV에 남겨두고,
+   실제로 뺄지는 컴포넌트별 크기를 보고 팀이 고르게 했다(제주·거제처럼 큰 섬도
+   컴포넌트가 나뉘므로 다리로 이어졌다고 자동으로 봐주지 않음 — 울릉도처럼 작고
+   외따로 있는 것만 골라 빼는 용도).
 
 Colab 사용법
 -----------
@@ -37,6 +43,7 @@ import rasterio
 from rasterio.warp import calculate_default_transform, reproject, Resampling
 import geopandas as gpd
 from rasterstats import zonal_stats
+from shapely.ops import unary_union
 
 TARGET_CRS = "EPSG:5179"  # 미터 단위, 한국 표준 좌표계
 
@@ -95,6 +102,55 @@ def _compute_slope(reproj_dem_path: str, slope_path: str) -> tuple[str, float | 
     return slope_path, slope_nodata
 
 
+def flag_islands(gdf: gpd.GeoDataFrame, buffer_eps: float = 1.0) -> gpd.GeoDataFrame:
+    """읍면동 폴리곤들을 "서로 붙어있는 땅덩어리(연결요소)" 단위로 묶어
+    각 행에 "섬_컴포넌트" 번호를 매긴다. GIS 관점의 "섬"은 결국 육지와
+    폴리곤이 맞닿아 있지 않은 덩어리라는 뜻이므로, 전체를 합친(union) 뒤
+    떨어져 있는 조각(부분)들로 다시 쪼개면 그대로 섬/육지 구분이 된다.
+
+    ※ 자동으로 "이게 섬이다"라고 제외하지 않는다 — 다리로 실제 연결된
+      거제·강화·영종 같은 큰 섬도 폴리곤 경계 자체는 바다로 끊겨 있어
+      별도 컴포넌트로 잡히기 때문에, 무조건 다 빼면 안 된다. 대신 컴포넌트별
+      크기(읍면동 수·면적)를 출력해주니, 그중 정말 빼고 싶은 것(예: 울릉도처럼
+      작고 외따로 떨어진 섬)의 컴포넌트 번호만 골라 exclude_islands()에 넘기면 된다.
+
+    buffer_eps(m): 원래 붙어있어야 할 폴리곤 사이에 좌표 오차로 미세한 틈이
+    생긴 경우를 메워 하나로 잇기 위한 여유값(단위: m, EPSG:5179 기준).
+    """
+    merged = unary_union(gdf.geometry.buffer(buffer_eps))
+    parts = list(merged.geoms) if merged.geom_type == "MultiPolygon" else [merged]
+    parts = sorted(parts, key=lambda p: p.area, reverse=True)  # 0번 = 가장 큰 덩어리(보통 한반도 본토)
+
+    def component_id(geom) -> int:
+        c = geom.representative_point()  # centroid와 달리 폴리곤 내부에 반드시 위치하는 점
+        for i, part in enumerate(parts):
+            if c.within(part):
+                return i
+        return -1  # 이론상 안 나옴 — union 안에 있는 점이므로 반드시 어딘가에 속함
+
+    gdf = gdf.copy()
+    gdf["섬_컴포넌트"] = gdf.geometry.apply(component_id)
+
+    summary = (
+        gdf.groupby("섬_컴포넌트")
+        .agg(읍면동수=("emdnm", "count"), 대표지역=("sidonm", lambda s: s.mode().iat[0]))
+        .sort_values("읍면동수", ascending=False)
+    )
+    print("연결된 땅덩어리(컴포넌트)별 크기 (0번 = 가장 큰 덩어리, 보통 한반도 본토):")
+    print(summary.to_string())
+    print("\n큰 섬(제주·거제·강화 등)도 육지와 안 붙어 있어 별도 컴포넌트로 잡힙니다.")
+    print("정말 제외할 컴포넌트 번호만 골라 exclude_islands(gdf, [번호, ...])로 넘기세요.")
+    return gdf
+
+
+def exclude_islands(gdf: gpd.GeoDataFrame, exclude_component_ids: list[int]) -> gpd.GeoDataFrame:
+    """flag_islands()가 매긴 컴포넌트 번호 중, 팀이 고른 것만 실제로 제외한다."""
+    before = len(gdf)
+    result = gdf[~gdf["섬_컴포넌트"].isin(exclude_component_ids)].copy()
+    print(f"{before - len(result)}개 읍면동 제외(컴포넌트 {exclude_component_ids}) → {len(result)}개 남음")
+    return result
+
+
 def _make_key(row) -> str:
     """다른 지표(의료접근성 등)와 합칠 수 있도록 "시도 시군구 읍면동" 형태로 키를 만든다.
     세종특별자치시처럼 시군구가 없는 경우는 시도+읍면동만으로 키를 만든다."""
@@ -125,6 +181,9 @@ def build_slope_score(
     # 폴리곤과 픽셀 위치가 정확히 겹쳐진다.
     gdf = gpd.read_file(emd_geojson_path).to_crs(TARGET_CRS)
 
+    print("3.5/3 섬(육지와 안 붙어있는 컴포넌트) 판정 중...")
+    gdf = flag_islands(gdf)
+
     # zonal statistics: 폴리곤(읍면동) 하나마다 그 경계 안에 들어오는 모든
     # 슬로프 픽셀을 모아서 평균·최대·픽셀 개수를 계산한다.
     # 예: 삼척시 가곡면 폴리곤 안의 수만 개 30m 픽셀 경사도값 → 평균 28.5도
@@ -141,12 +200,17 @@ def build_slope_score(
     valid_mean = gdf["평균경사도"].dropna()
     gdf["지형장벽_취약점수"] = (gdf["평균경사도"] - valid_mean.min()) / (valid_mean.max() - valid_mean.min())
 
-    result = gdf[["읍면_key", "sidonm", "sggnm", "emdnm", "area", "평균경사도", "최대경사도", "지형장벽_취약점수"]].copy()
+    result = gdf[[
+        "읍면_key", "sidonm", "sggnm", "emdnm", "area",
+        "평균경사도", "최대경사도", "지형장벽_취약점수", "섬_컴포넌트",
+    ]].copy()
     result = result.sort_values("지형장벽_취약점수", ascending=False).reset_index(drop=True)
 
     if save_path:
         result.to_csv(save_path, index=False, encoding="utf-8-sig")
         print(f"저장 완료: {save_path} ({len(result)}개 읍면동)")
+        print('※ 섬을 실제로 빼려면: exclude_islands(result, [컴포넌트번호, ...]) 를 따로 호출하세요')
+        print('  (이 CSV에는 "섬_컴포넌트" 컬럼만 남겨뒀고, 제외 여부는 팀이 정하는 다음 단계입니다)')
 
     return result
 
