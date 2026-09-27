@@ -28,6 +28,13 @@
    실제로 뺄지는 컴포넌트별 크기를 보고 팀이 고르게 했다(제주·거제처럼 큰 섬도
    컴포넌트가 나뉘므로 다리로 이어졌다고 자동으로 봐주지 않음 — 울릉도처럼 작고
    외따로 있는 것만 골라 빼는 용도).
+7) 섬 제외 기준(통계적, 재현 가능): "섬이라서" 빼는 게 아니라 "지형장벽 지수의
+   정규화를 왜곡할 만큼 통계적으로 극단적이라서" 뺀다는 근거를 남기기 위해,
+   표준 상자그림 이상치 규칙(IQR method, 상한선=Q3+1.5×IQR)을 각 섬 컴포넌트의
+   평균경사도 중앙값에 적용한다(suggest_island_exclusion()). 이 기준이면 제주처럼
+   완만한 읍면동이 많이 섞인 큰 섬은 자동으로 제외 후보에서 빠지고, 울릉도처럼
+   소수의 읍면동이 일관되게 험준한 경우만 후보로 걸러진다 — 발표·보고서에서
+   "왜 이 섬은 빼고 저 섬은 남겼는지" 설명할 근거가 된다.
 
 Colab 사용법
 -----------
@@ -39,6 +46,7 @@ Colab 사용법
 import subprocess
 
 import numpy as np
+import pandas as pd
 import rasterio
 from rasterio.warp import calculate_default_transform, reproject, Resampling
 import geopandas as gpd
@@ -141,6 +149,50 @@ def flag_islands(gdf: gpd.GeoDataFrame, buffer_eps: float = 1.0) -> gpd.GeoDataF
     print("\n큰 섬(제주·거제·강화 등)도 육지와 안 붙어 있어 별도 컴포넌트로 잡힙니다.")
     print("정말 제외할 컴포넌트 번호만 골라 exclude_islands(gdf, [번호, ...])로 넘기세요.")
     return gdf
+
+
+def suggest_island_exclusion(result: pd.DataFrame, iqr_multiplier: float = 1.5) -> pd.DataFrame:
+    """섬 컴포넌트가 "지형장벽 지수의 정규화를 왜곡할 만큼 통계적으로 극단적인가"를
+    표준 상자그림 이상치 규칙(IQR method)으로 판단해 제외 후보를 추천한다.
+
+    "섬이라서" 빼는 게 아니라 "지수를 왜곡할 만큼 극단치라서" 빼는 것임을
+    재현 가능하게 보여주기 위한 기준이다 (팀 발표·보고서에서 "왜 이 섬은 빼고
+    저 섬은 남겼는지" 설명할 때 근거로 쓸 수 있다). 최종 제외 여부는 이 함수가
+    자동으로 정하지 않고, 결과 표를 보고 팀이 exclude_islands()에 넘길 번호를
+    고르는 것으로 남겨둔다.
+
+    방법:
+    1) 전국 모든 읍면동의 "평균경사도" 분포에서 Q1, Q3, IQR(=Q3-Q1)을 구한다.
+    2) 이상치 상한선 = Q3 + iqr_multiplier × IQR (기본 1.5는 상자그림에서
+       흔히 쓰는 표준값).
+    3) 섬 컴포넌트(0번=본토 제외)별로, 그 안에 속한 읍면동들의 "평균경사도"
+       중앙값을 구한다 — 평균이 아니라 중앙값을 쓰는 이유는 컴포넌트 안에
+       읍면동이 하나만 극단적이어도 평균은 덜 민감하게 반응하기 때문이다.
+    4) 그 중앙값이 이상치 상한선을 넘는 컴포넌트만 "제외 후보"로 표시한다.
+       → 제주처럼 완만한 읍면동이 많이 섞인 큰 섬은 중앙값이 낮아 자동으로
+         후보에서 빠지고, 울릉도처럼 소수의 읍면동이 일관되게 험준한 경우만
+         후보로 걸러진다.
+    """
+    q1, q3 = result["평균경사도"].quantile([0.25, 0.75])
+    iqr = q3 - q1
+    upper_bound = q3 + iqr_multiplier * iqr
+    print(f"전국 읍면동 평균경사도 이상치 상한선(Q3+{iqr_multiplier}×IQR): {upper_bound:.2f}도")
+
+    island_components = result[result["섬_컴포넌트"] != 0]
+    comp_summary = (
+        island_components.groupby("섬_컴포넌트")
+        .agg(
+            읍면동수=("emdnm", "count"),
+            대표지역=("sidonm", lambda s: s.mode().iat[0]),
+            평균경사도_중앙값=("평균경사도", "median"),
+        )
+        .sort_values("평균경사도_중앙값", ascending=False)
+    )
+    comp_summary["제외_후보"] = comp_summary["평균경사도_중앙값"] > upper_bound
+    print(comp_summary.to_string())
+    print("\n※ '제외_후보=True'인 컴포넌트만 통계적 이상치입니다.")
+    print("   최종 제외 여부는 팀 논의로 정하고, exclude_islands(result, [번호, ...])에 넘기세요.")
+    return comp_summary
 
 
 def exclude_islands(gdf: gpd.GeoDataFrame, exclude_component_ids: list[int]) -> gpd.GeoDataFrame:
