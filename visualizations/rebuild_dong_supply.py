@@ -114,6 +114,11 @@ def rebuild(boundary, stops, supply, population, allow_missing_population=False)
     fourteen[['departures', 'stops']] = fourteen[['departures', 'stops']].fillna(0)
     fourteen['stops'] = fourteen.stops.astype(int)
     fourteen['departures_per_stop'] = fourteen.departures / fourteen.stops.where(fourteen.stops > 0)
+    fourteen = fourteen.merge(ten[['dong_code', 'population']], on='dong_code',
+                              how='left', validate='one_to_one')
+    population_denominator = fourteen.population.where(fourteen.population > 0)
+    fourteen['departures_per_10k_population'] = fourteen.departures / population_denominator * 10000
+    fourteen['headway_min_per_10k_population'] = fourteen.headway_min / population_denominator * 10000
     audit = {'regions': len(regions), 'coordinate_stops': len(stops),
              'spatially_unmatched_stops': joined.loc[joined.dong_code.isna(), 'stop_id'].tolist(),
              'weekday_stops': len(weekday),

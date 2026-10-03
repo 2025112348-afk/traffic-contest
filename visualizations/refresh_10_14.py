@@ -14,6 +14,19 @@ PROVINCES = {'서울특별시', '부산광역시', '대구광역시', '인천광
              '대전광역시', '울산광역시', '세종특별자치시', '경기도', '강원특별자치도',
              '충청북도', '충청남도', '전북특별자치도', '전라남도', '경상북도', '경상남도', '제주특별자치도'}
 
+# Dataset-specific aliases to the supplied boundary vocabulary, not a claim
+# that historical population has been redistributed onto current boundaries.
+SIDO_ALIASES = {'강원도': '강원특별자치도', '전라북도': '전북특별자치도',
+                '광주광역시': '전남광주통합특별시', '전라남도': '전남광주통합특별시'}
+PROVINCES |= set(SIDO_ALIASES) | set(SIDO_ALIASES.values())
+
+
+def resolve_sido(name):
+    if pd.isna(name):
+        return None
+    name = str(name).strip()
+    return SIDO_ALIASES.get(name, name)
+
 
 def match_population(path, boundary):
     raw = pd.read_csv(path, encoding='cp949', dtype=str)
@@ -36,9 +49,14 @@ def match_population(path, boundary):
     if pending is not None:
         raise ValueError('Trailing population row lacks elderly count.')
     source = pd.DataFrame(rows)
-    keys = ['province', 'dong']
+    source = source.rename(columns={'province': 'population_source_province'})
+    source['join_province'] = source.population_source_province.map(resolve_sido)
+    source['dong'] = source.dong.str.strip()
+    keys = ['join_province', 'dong']
     source['source_key_count'] = source.groupby(keys).dong.transform('size')
     target = boundary[REGION].copy()
+    target['join_province'] = target.province.map(resolve_sido)
+    target['dong'] = target.dong.str.strip()
     target['boundary_key_count'] = target.groupby(keys).dong.transform('size')
     unique_source = source[source.source_key_count == 1]
     candidate = target.merge(unique_source, on=keys, how='left', validate='many_to_one')
@@ -48,10 +66,12 @@ def match_population(path, boundary):
     candidate.loc[ambiguous, 'population_status'] = 'ambiguous_name'
     matched = candidate.source_line.notna() & ~ambiguous
     candidate.loc[matched, 'population_status'] = 'unique_province_dong_name_match'
+    alias_matched = matched & (candidate.population_source_province != candidate.province)
+    candidate.loc[alias_matched, 'population_status'] = 'unique_normalized_province_dong_name_match'
     population = candidate.loc[matched, ['dong_code', 'population', 'elderly']].copy()
     accepted_keys = set(map(tuple, candidate.loc[matched, keys].values))
     source['matched'] = source[keys].apply(tuple, axis=1).isin(accepted_keys)
-    return population, candidate[REGION + ['population_status', 'source_line']], source, year
+    return population, candidate[REGION + ['population_status', 'source_line', 'population_source_province']], source, year
 
 
 def draw(boundary, table, column, title, label, path):
@@ -92,21 +112,26 @@ def main():
     if set(stops.stop_id) != set(supply.loc[supply.day_type == 'weekday', 'stop_id']):
         raise ValueError('Bus stop universe and weekday supply universe differ.')
     ten, fourteen, audit = rebuild(boundary, stops, supply, population, allow_missing_population=True)
-    ten = ten.merge(status[['dong_code', 'population_status', 'source_line']], on='dong_code', validate='one_to_one')
+    ten = ten.merge(status[['dong_code', 'population_status', 'source_line', 'population_source_province']], on='dong_code', validate='one_to_one')
     ten = ten.rename(columns={'source_line': 'population_source_line'})
     for table in [ten, fourteen]:
         table['boundary_date'] = '2026-07-01'
         table['stop_reference_period'] = '2025-03'
     ten['population_year'] = year
+    fourteen['population_year'] = year
+    fourteen = fourteen.merge(ten[['dong_code', 'population_status']],
+                              on='dong_code', how='left', validate='one_to_one')
     fourteen['supply_reference_period'] = '2025-03'
     assert ten.dong_code.is_unique and fourteen.dong_code.is_unique
     assert ten.dong_code.equals(fourteen.dong_code)
-    assert ten.loc[ten.population_status != 'unique_province_dong_name_match', 'population'].isna().all()
+    matched_statuses = ['unique_province_dong_name_match', 'unique_normalized_province_dong_name_match']
+    assert ten.loc[~ten.population_status.isin(matched_statuses), 'population'].isna().all()
     audit.update({'boundary': str(DEFAULT_BOUNDARY), 'population_source': str(population_files[0]),
                   'supply_source': str(supply_path), 'stops_source': str(stops_path),
                   'boundary_date': '2026-07-01', 'population_year': year, 'supply_period': '2025-03',
                   'boundary_crs_correction': 'Archive metadata EPSG:5179 overridden with EPSG:4326 before projection; coordinates are longitude/latitude, consistent with terrain source documentation.',
-                  'population_matching': 'Exact province+dong name only when unique in both source and boundary; no allocation of ambiguous names.',
+                  'population_matching': 'Province aliases normalized to supplied boundary vocabulary, then exact dong name; keys must be unique in both source and boundary AFTER normalization. No district inferred and no ambiguous names allocated.',
+                  'province_aliases': SIDO_ALIASES,
                   'population_status_counts': ten.population_status.value_counts().to_dict(),
                   'unmatched_source_population_rows': int((~source_population.matched).sum()),
                   'weekday_missing_headways_kept': int(supply.loc[supply.day_type == 'weekday', 'headway_min'].isna().sum())})
@@ -116,7 +141,7 @@ def main():
     audit_dir.mkdir(exist_ok=True)
     ten.to_csv(out10 / 'stop_supply_by_dong.csv', index=False, encoding='utf-8-sig')
     fourteen.to_csv(out14 / 'dong_supply.csv', index=False, encoding='utf-8-sig')
-    status[status.population_status != 'unique_province_dong_name_match'].to_csv(
+    status[~status.population_status.isin(matched_statuses)].to_csv(
         audit_dir / 'unresolved_population_regions.csv', index=False, encoding='utf-8-sig')
     source_population[~source_population.matched].to_csv(
         audit_dir / 'unmatched_source_population.csv', index=False, encoding='utf-8-sig')

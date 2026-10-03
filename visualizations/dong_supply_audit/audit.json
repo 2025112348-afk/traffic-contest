@@ -163,12 +163,19 @@
   "population_year": "2025",
   "supply_period": "2025-03",
   "boundary_crs_correction": "Archive metadata EPSG:5179 overridden with EPSG:4326 before projection; coordinates are longitude/latitude, consistent with terrain source documentation.",
-  "population_matching": "Exact province+dong name only when unique in both source and boundary; no allocation of ambiguous names.",
+  "population_matching": "Province aliases normalized to supplied boundary vocabulary, then exact dong name; keys must be unique in both source and boundary AFTER normalization. No district inferred and no ambiguous names allocated.",
+  "province_aliases": {
+    "강원도": "강원특별자치도",
+    "전라북도": "전북특별자치도",
+    "광주광역시": "전남광주통합특별시",
+    "전라남도": "전남광주통합특별시"
+  },
   "population_status_counts": {
     "unique_province_dong_name_match": 3044,
-    "unmatched_name_or_boundary_vintage": 378,
-    "ambiguous_name": 136
+    "unique_normalized_province_dong_name_match": 368,
+    "ambiguous_name": 136,
+    "unmatched_name_or_boundary_vintage": 10
   },
-  "unmatched_source_population_rows": 513,
+  "unmatched_source_population_rows": 145,
   "weekday_missing_headways_kept": 4456
 }
