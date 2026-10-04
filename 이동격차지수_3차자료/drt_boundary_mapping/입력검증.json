@@ -1,0 +1,13 @@
+{
+  "sha256": {
+    "data\\raw\\terrain\\emd_boundary_20260701.zip": "ef5945251db04e595713d6492b8e16f058900d96e64526f5a5d4f28d62c80a3f",
+    "data\\processed\\terrain\\slope_score.csv": "6396cae9c14c7a182b30d15de734aaca78c9db0152c8e8a5937264a67d977e85",
+    "data\\raw\\경기도_똑버스_운행현황.csv": "8ac61a7d2f6832fb2e19b6f4e883000a19c76ba945f1d172be8d8ad25de27308",
+    "이동격차지수_3차자료\\drt_boundary_rules.json": "9509e6d22e61e3bfa5a67e6cb161a5b1a742237d13ea0471869fdc32cc5dbe5c",
+    "이동격차지수_3차자료\\drt_candidate_policy.json": "cd19d931189a4345fb67cad2cd0eada44b364ac69ddd9b7307cdfe766650f33c"
+  },
+  "경계일": "2026-07-01",
+  "조회일": "2026-10-05",
+  "경기도경계수": 602,
+  "원본운행구역수": 46
+}
