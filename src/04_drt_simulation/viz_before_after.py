@@ -31,7 +31,7 @@ gdf_proj["centroid"] = gdf_proj.geometry.centroid
 
 fig, axes = plt.subplots(1, 2, figsize=(19, 11))
 
-# ---- 왼쪽: 재배치 전(현재 귀속대수, 326대 중 300대 귀속) ----
+# ---- 왼쪽: 재배치 전(현재 귀속대수, 326대 중 307대 귀속) ----
 ax = axes[0]
 gdf_proj.plot(ax=ax, color="#eef1f4", edgecolor="#c9ced4", linewidth=0.4)
 cur = gdf_proj[gdf_proj["현재_귀속대수"] > 0]
