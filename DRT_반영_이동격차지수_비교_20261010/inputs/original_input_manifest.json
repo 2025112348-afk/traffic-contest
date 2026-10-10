@@ -1,0 +1,34 @@
+[
+  {
+    "path": "C:\\Users\\전가연\\OneDrive\\Desktop\\traffic\\1인당_자동차_등록대수_시도_시_군_구__20260923121149.csv",
+    "sha256": "f74d861dd85978821ac900f69187f50ba561b4dc5902bb39e5667cf908ca6974"
+  },
+  {
+    "path": "C:\\Users\\전가연\\OneDrive\\Desktop\\traffic-contest\\data\\processed\\terrain\\slope_score.csv",
+    "sha256": "6396cae9c14c7a182b30d15de734aaca78c9db0152c8e8a5937264a67d977e85"
+  },
+  {
+    "path": "C:\\Users\\전가연\\OneDrive\\Desktop\\traffic-contest\\data\\101_DT_1IN1503_20261004030052.xls",
+    "sha256": "691a674991451fbcf572c0986f5178c6be3320170999e6affd030c80b3ac415a"
+  },
+  {
+    "path": "C:\\Users\\전가연\\OneDrive\\Desktop\\traffic-contest\\data\\processed\\medical\\medical_access_score_hira.csv",
+    "sha256": "ea2519630c7938102403cd15a3df80e55e61c354b86366215b63c2c72e89cfdb"
+  },
+  {
+    "path": "C:\\Users\\전가연\\OneDrive\\Desktop\\traffic-contest\\visualizations\\10_stop_supply_index\\stop_supply_by_dong.csv",
+    "sha256": "81d26e24c272feeea8fce9b5359a6f392d23d816aeb645117511d74b62ada783"
+  },
+  {
+    "path": "C:\\Users\\전가연\\OneDrive\\Desktop\\traffic-contest\\visualizations\\14_dong_supply\\dong_supply.csv",
+    "sha256": "b2f58a6ad1c15767a4a846a1fccf1fd2e928d17c63281341fea013f2547cd343"
+  },
+  {
+    "path": "C:\\Users\\전가연\\OneDrive\\Desktop\\traffic-contest\\이동격차지수_3차자료\\Traffic_entropy_final.ipynb",
+    "sha256": "e10e014927214679279d4e143aa2163bf742ced94328531cda28c6fb132b1bbd"
+  },
+  {
+    "path": "C:\\Users\\전가연\\OneDrive\\Desktop\\traffic-contest\\data\\raw\\경기도_똑버스_운행현황.csv",
+    "sha256": "8ac61a7d2f6832fb2e19b6f4e883000a19c76ba945f1d172be8d8ad25de27308"
+  }
+]

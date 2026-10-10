@@ -1,0 +1,52 @@
+{
+  "python": "3.14.3",
+  "pandas": "3.0.3",
+  "numpy": "2.4.5",
+  "matplotlib": "3.10.9",
+  "inputs_and_code": [
+    {
+      "file": "inputs\\current_operation.csv",
+      "sha256": "a72a23b04087a17ccef9dc0bacce753bf02f039230d507fa3042e4b2c319f439"
+    },
+    {
+      "file": "inputs\\manifest.json",
+      "sha256": "3a6e0193774bc9f201106c350dc604aa8f9db8cc2be123f70ee466221be7f6dc"
+    },
+    {
+      "file": "inputs\\national_baseline.csv",
+      "sha256": "2731e66aa4b933f19edaa307dcfbfbb977e7a480fe8b5c5b3f6f299b9d9556b1"
+    },
+    {
+      "file": "inputs\\original_boundary_rules.json",
+      "sha256": "9509e6d22e61e3bfa5a67e6cb161a5b1a742237d13ea0471869fdc32cc5dbe5c"
+    },
+    {
+      "file": "inputs\\original_candidate_policy.json",
+      "sha256": "cd19d931189a4345fb67cad2cd0eada44b364ac69ddd9b7307cdfe766650f33c"
+    },
+    {
+      "file": "inputs\\original_input_manifest.json",
+      "sha256": "061f0a1e811028293b6827cd1008306408278d73e1b52f7406d1db0fbc6476c6"
+    },
+    {
+      "file": "inputs\\original_weight_check.csv",
+      "sha256": "495e146c918ec36998abd7eaf6d0deb5d964a60bc19be4ddf286a9929fe4a8d6"
+    },
+    {
+      "file": "inputs\\reallocation.csv",
+      "sha256": "3a2b3eaec83c350c27731edcb4f79f6efd0061308fb2dca7bfbde2e292da8ae5"
+    },
+    {
+      "file": "inputs\\route_mapping.json",
+      "sha256": "37be71551a2835e2dd8326e77bfc510c5bdb4911d9353680abcf62d0164ba23b"
+    },
+    {
+      "file": "inputs\\Traffic_entropy_final.ipynb",
+      "sha256": "e10e014927214679279d4e143aa2163bf742ced94328531cda28c6fb132b1bbd"
+    },
+    {
+      "file": "run_comparison.py",
+      "sha256": "71fa166816fb5e18b8a59cf398e37f25be87e37f3a38d498d587fbcc475cf542"
+    }
+  ]
+}

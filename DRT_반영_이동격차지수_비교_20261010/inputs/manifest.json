@@ -1,0 +1,42 @@
+[
+  {
+    "file": "inputs/current_operation.csv",
+    "source": "경기교통공사_똑버스_운행현황_20261010.csv",
+    "sha256": "a72a23b04087a17ccef9dc0bacce753bf02f039230d507fa3042e4b2c319f439"
+  },
+  {
+    "file": "inputs/reallocation.csv",
+    "source": "경기도_재배치_시뮬레이션_결과.csv",
+    "sha256": "3a2b3eaec83c350c27731edcb4f79f6efd0061308fb2dca7bfbde2e292da8ae5"
+  },
+  {
+    "file": "inputs/national_baseline.csv",
+    "source": "이동격차지수_3차자료\\gyeonggi_drt_comparison\\전국_최종지수_재계산.csv",
+    "sha256": "2731e66aa4b933f19edaa307dcfbfbb977e7a480fe8b5c5b3f6f299b9d9556b1"
+  },
+  {
+    "file": "inputs/Traffic_entropy_final.ipynb",
+    "source": "이동격차지수_3차자료\\Traffic_entropy_final.ipynb",
+    "sha256": "e10e014927214679279d4e143aa2163bf742ced94328531cda28c6fb132b1bbd"
+  },
+  {
+    "file": "inputs/original_weight_check.csv",
+    "source": "이동격차지수_3차자료\\gyeonggi_drt_comparison\\전국가중치_재현검증.csv",
+    "sha256": "495e146c918ec36998abd7eaf6d0deb5d964a60bc19be4ddf286a9929fe4a8d6"
+  },
+  {
+    "file": "inputs/original_input_manifest.json",
+    "source": "이동격차지수_3차자료\\gyeonggi_drt_comparison\\입력파일_기록.json",
+    "sha256": "061f0a1e811028293b6827cd1008306408278d73e1b52f7406d1db0fbc6476c6"
+  },
+  {
+    "file": "inputs/original_boundary_rules.json",
+    "source": "이동격차지수_3차자료\\drt_boundary_rules.json",
+    "sha256": "9509e6d22e61e3bfa5a67e6cb161a5b1a742237d13ea0471869fdc32cc5dbe5c"
+  },
+  {
+    "file": "inputs/original_candidate_policy.json",
+    "source": "이동격차지수_3차자료\\drt_candidate_policy.json",
+    "sha256": "cd19d931189a4345fb67cad2cd0eada44b364ac69ddd9b7307cdfe766650f33c"
+  }
+]

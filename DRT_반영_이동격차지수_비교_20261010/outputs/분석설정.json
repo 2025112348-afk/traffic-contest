@@ -1,0 +1,11 @@
+{
+  "drt_min": 0.0,
+  "drt_max": 10.0,
+  "pooled_rows": 1204,
+  "entropy_complete_rows": 1140,
+  "epsilon": 1e-06,
+  "normalization": "기존6개 전국점수 보존; DRT 두 시나리오 합동 Min-Max",
+  "weights_population": "경기도 602개 × 2시나리오 중 7지표 완전행",
+  "missing_policy": "원본과 동일: 가중치 적합시 결측행 제외, 합산시 결측점수 0",
+  "shared_weight_fit": true
+}

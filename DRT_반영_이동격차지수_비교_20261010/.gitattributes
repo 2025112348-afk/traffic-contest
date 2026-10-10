@@ -1,0 +1,2 @@
+# Preserve exact input bytes for SHA-256 reproducibility checks.
+* -text

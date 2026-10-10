@@ -1,0 +1,894 @@
+[
+  {
+    "route_id": "DRT001",
+    "city": "연천군",
+    "area": "연천읍·내산리",
+    "fleet": 2,
+    "targets": [
+      "연천읍",
+      "신서면"
+    ],
+    "status": "명칭·관할연결",
+    "allocation": "대상 행정동 균등배분(가상 귀속대수)",
+    "note": "기존 내산리→신서면 연결 규칙 사용. 연천읍과 신서면에 1대씩 가상 귀속.",
+    "sources": [
+      "https://www.yeoncheon.go.kr/www/contents.do?key=3441",
+      "https://yeoncheon.go.kr/www/contents.do?key=3410"
+    ]
+  },
+  {
+    "route_id": "DRT002",
+    "city": "파주시",
+    "area": "운정4동",
+    "fleet": 3,
+    "targets": [
+      "운정4동"
+    ],
+    "status": "명칭·관할연결",
+    "allocation": "대상 행정동 균등배분(가상 귀속대수)",
+    "note": "명시 읍면동 연결 또는 읍·면·동 접미사 확장. 전역 운행 여부와 동별 실제 차량 수는 미확인.",
+    "sources": []
+  },
+  {
+    "route_id": "DRT003",
+    "city": "파주시",
+    "area": "광탄면",
+    "fleet": 3,
+    "targets": [
+      "광탄면"
+    ],
+    "status": "명칭·관할연결",
+    "allocation": "대상 행정동 균등배분(가상 귀속대수)",
+    "note": "명시 읍면동 연결 또는 읍·면·동 접미사 확장. 전역 운행 여부와 동별 실제 차량 수는 미확인.",
+    "sources": []
+  },
+  {
+    "route_id": "DRT004",
+    "city": "파주시",
+    "area": "탄현면",
+    "fleet": 3,
+    "targets": [
+      "탄현면"
+    ],
+    "status": "명칭·관할연결",
+    "allocation": "대상 행정동 균등배분(가상 귀속대수)",
+    "note": "명시 읍면동 연결 또는 읍·면·동 접미사 확장. 전역 운행 여부와 동별 실제 차량 수는 미확인.",
+    "sources": []
+  },
+  {
+    "route_id": "DRT005",
+    "city": "파주시",
+    "area": "운정1,2,3지구 및 교하지구",
+    "fleet": 15,
+    "targets": [
+      "교하동",
+      "운정1동",
+      "운정2동",
+      "운정3동",
+      "운정4동",
+      "운정5동",
+      "운정6동"
+    ],
+    "status": "후보",
+    "allocation": "대상 행정동 균등배분(가상 귀속대수)",
+    "note": "기존 운정신도시·교하지구 후보 7개 동을 유지. 지구번호를 행정동 번호로 간주하지 않음. 운정4동 별도 3대와 합산.",
+    "sources": []
+  },
+  {
+    "route_id": "DRT006",
+    "city": "양주시",
+    "area": "장흥면",
+    "fleet": 4,
+    "targets": [
+      "장흥면"
+    ],
+    "status": "명칭·관할연결",
+    "allocation": "대상 행정동 균등배분(가상 귀속대수)",
+    "note": "명시 읍면동 연결 또는 읍·면·동 접미사 확장. 전역 운행 여부와 동별 실제 차량 수는 미확인.",
+    "sources": []
+  },
+  {
+    "route_id": "DRT007",
+    "city": "양주시",
+    "area": "백석읍·광적면·양주역",
+    "fleet": 4,
+    "targets": [
+      "백석읍",
+      "광적면"
+    ],
+    "status": "후보",
+    "allocation": "대상 행정동 균등배분(가상 귀속대수)",
+    "note": "기존 사용자 지정 후보 권역. 양주역은 연계거점으로만 보존.",
+    "sources": []
+  },
+  {
+    "route_id": "DRT008",
+    "city": "양주시",
+    "area": "은현·남면·덕정역",
+    "fleet": 3,
+    "targets": [
+      "은현면",
+      "남면"
+    ],
+    "status": "후보",
+    "allocation": "대상 행정동 균등배분(가상 귀속대수)",
+    "note": "기존 사용자 지정 후보 권역. 덕정역은 연계거점으로만 보존.",
+    "sources": []
+  },
+  {
+    "route_id": "DRT009",
+    "city": "양주시",
+    "area": "옥정신도시,회천지구,삼숭동 및 덕계역",
+    "fleet": 15,
+    "targets": [
+      "옥정1동",
+      "옥정2동",
+      "회천1동",
+      "회천2동",
+      "회천3동",
+      "양주2동"
+    ],
+    "status": "후보",
+    "allocation": "대상 행정동 균등배분(가상 귀속대수)",
+    "note": "기존 옥정·회천·삼숭 후보 6개 동. 덕계역은 연계거점이며 별도 차량을 생성하지 않음.",
+    "sources": [
+      "https://www.yangju.go.kr/www/contents.do?key=415"
+    ]
+  },
+  {
+    "route_id": "DRT010",
+    "city": "김포시",
+    "area": "고촌·풍무",
+    "fleet": 10,
+    "targets": [
+      "고촌읍",
+      "풍무동"
+    ],
+    "status": "명칭·관할연결",
+    "allocation": "대상 행정동 균등배분(가상 귀속대수)",
+    "note": "접미사 생략 확장: 고촌읍·풍무동.",
+    "sources": []
+  },
+  {
+    "route_id": "DRT011",
+    "city": "고양시",
+    "area": "덕은동",
+    "fleet": 3,
+    "targets": [
+      "화전동",
+      "대덕동"
+    ],
+    "status": "후보",
+    "allocation": "대상 행정동 균등배분(가상 귀속대수)",
+    "note": "기존 덕은동 분할관할 후보 2개 동. 향동동 4대는 별도 화전동에 합산.",
+    "sources": [
+      "https://www.goyang.go.kr/dygu/dygu01/dygu01_5/dygu01_5_3.jsp"
+    ]
+  },
+  {
+    "route_id": "DRT012",
+    "city": "고양시",
+    "area": "고봉동",
+    "fleet": 3,
+    "targets": [
+      "고봉동"
+    ],
+    "status": "명칭·관할연결",
+    "allocation": "대상 행정동 균등배분(가상 귀속대수)",
+    "note": "명시 읍면동 연결 또는 읍·면·동 접미사 확장. 전역 운행 여부와 동별 실제 차량 수는 미확인.",
+    "sources": []
+  },
+  {
+    "route_id": "DRT013",
+    "city": "고양시",
+    "area": "식사동",
+    "fleet": 4,
+    "targets": [
+      "식사동"
+    ],
+    "status": "명칭·관할연결",
+    "allocation": "대상 행정동 균등배분(가상 귀속대수)",
+    "note": "명시 읍면동 연결 또는 읍·면·동 접미사 확장. 전역 운행 여부와 동별 실제 차량 수는 미확인.",
+    "sources": []
+  },
+  {
+    "route_id": "DRT014",
+    "city": "고양시",
+    "area": "향동동",
+    "fleet": 4,
+    "targets": [
+      "화전동"
+    ],
+    "status": "명칭·관할연결",
+    "allocation": "대상 행정동 균등배분(가상 귀속대수)",
+    "note": "기존 향동동→화전동 연결 규칙.",
+    "sources": [
+      "https://www.goyang.go.kr/dygu/dygu01/dygu01_5/dygu01_5_3.jsp"
+    ]
+  },
+  {
+    "route_id": "DRT015",
+    "city": "의정부시",
+    "area": "민락2·고산지구",
+    "fleet": 4,
+    "targets": [
+      "송산3동",
+      "고산동"
+    ],
+    "status": "후보",
+    "allocation": "대상 행정동 균등배분(가상 귀속대수)",
+    "note": "기존 사용자 지정 민락2·고산지구 후보 2개 동.",
+    "sources": [
+      "https://www.ui4u.go.kr/cscportal/bbs/view.do?bIdx=348257&mId=0402000000&ptIdx=85"
+    ]
+  },
+  {
+    "route_id": "DRT016",
+    "city": "의정부시",
+    "area": "민락1지구",
+    "fleet": 4,
+    "targets": [
+      "송산1동",
+      "송산2동"
+    ],
+    "status": "후보",
+    "allocation": "대상 행정동 균등배분(가상 귀속대수)",
+    "note": "기존 사용자 지정 민락1지구 후보 2개 동.",
+    "sources": [
+      "https://www.ui4u.go.kr/cscportal/songsan2/main.do?mId=0311010000"
+    ]
+  },
+  {
+    "route_id": "DRT017",
+    "city": "하남시",
+    "area": "하남 감일지구",
+    "fleet": 5,
+    "targets": [
+      "감일동"
+    ],
+    "status": "후보",
+    "allocation": "대상 행정동 균등배분(가상 귀속대수)",
+    "note": "감일지구→감일동 잠정 후보. 실제 지구 경계는 미확인.",
+    "sources": []
+  },
+  {
+    "route_id": "DRT018",
+    "city": "하남시",
+    "area": "하남 위례지구",
+    "fleet": 4,
+    "targets": [
+      "위례동"
+    ],
+    "status": "후보",
+    "allocation": "대상 행정동 균등배분(가상 귀속대수)",
+    "note": "위례지구→위례동 잠정 후보. 실제 지구 경계는 미확인.",
+    "sources": []
+  },
+  {
+    "route_id": "DRT019",
+    "city": "광주시",
+    "area": "태전동·고산동",
+    "fleet": 5,
+    "targets": [
+      "광남1동",
+      "광남2동",
+      "오포1동"
+    ],
+    "status": "후보",
+    "allocation": "대상 행정동 균등배분(가상 귀속대수)",
+    "note": "태전동은 광남1·2동에 걸치며 고산동은 오포1동 소속. 3개 행정동 후보에 균등 귀속; 실제 운행범위 미확인.",
+    "sources": [
+      "https://tour.gjcity.go.kr/csc/contents.do?mId=1601020000",
+      "https://www.gjcity.go.kr/depart/img/sub08/2025_child.pdf",
+      "https://gumc.or.kr/business/park8"
+    ]
+  },
+  {
+    "route_id": "DRT020",
+    "city": "광주시",
+    "area": "탄벌동·장지동",
+    "fleet": 4,
+    "targets": [
+      "탄벌동",
+      "광남1동"
+    ],
+    "status": "명칭·관할연결",
+    "allocation": "대상 행정동 균등배분(가상 귀속대수)",
+    "note": "탄벌동 명칭 연결 및 장지동→광남1동 관할 연결. 두 대상 균등 귀속.",
+    "sources": [
+      "https://tour.gjcity.go.kr/csc/contents.do?mId=1601020000",
+      "https://www.gjcity.go.kr/depart/img/sub08/2025_child.pdf"
+    ]
+  },
+  {
+    "route_id": "DRT021",
+    "city": "광주시",
+    "area": "곤지암읍",
+    "fleet": 5,
+    "targets": [
+      "곤지암읍"
+    ],
+    "status": "명칭·관할연결",
+    "allocation": "대상 행정동 균등배분(가상 귀속대수)",
+    "note": "명시 읍면동 연결 또는 읍·면·동 접미사 확장. 전역 운행 여부와 동별 실제 차량 수는 미확인.",
+    "sources": []
+  },
+  {
+    "route_id": "DRT022",
+    "city": "광주시",
+    "area": "도척면",
+    "fleet": 5,
+    "targets": [
+      "도척면"
+    ],
+    "status": "명칭·관할연결",
+    "allocation": "대상 행정동 균등배분(가상 귀속대수)",
+    "note": "명시 읍면동 연결 또는 읍·면·동 접미사 확장. 전역 운행 여부와 동별 실제 차량 수는 미확인.",
+    "sources": []
+  },
+  {
+    "route_id": "DRT023",
+    "city": "광주시",
+    "area": "초월읍",
+    "fleet": 6,
+    "targets": [
+      "초월읍"
+    ],
+    "status": "명칭·관할연결",
+    "allocation": "대상 행정동 균등배분(가상 귀속대수)",
+    "note": "명시 읍면동 연결 또는 읍·면·동 접미사 확장. 전역 운행 여부와 동별 실제 차량 수는 미확인.",
+    "sources": []
+  },
+  {
+    "route_id": "DRT024",
+    "city": "광주시",
+    "area": "퇴촌면·남종면",
+    "fleet": 4,
+    "targets": [
+      "퇴촌면",
+      "남종면"
+    ],
+    "status": "명칭·관할연결",
+    "allocation": "대상 행정동 균등배분(가상 귀속대수)",
+    "note": "명시 읍면동 연결 또는 읍·면·동 접미사 확장. 전역 운행 여부와 동별 실제 차량 수는 미확인.",
+    "sources": []
+  },
+  {
+    "route_id": "DRT025",
+    "city": "용인시",
+    "area": "모현읍",
+    "fleet": 4,
+    "targets": [
+      "모현읍"
+    ],
+    "status": "명칭·관할연결",
+    "allocation": "대상 행정동 균등배분(가상 귀속대수)",
+    "note": "명시 읍면동 연결 또는 읍·면·동 접미사 확장. 전역 운행 여부와 동별 실제 차량 수는 미확인.",
+    "sources": []
+  },
+  {
+    "route_id": "DRT026",
+    "city": "용인시",
+    "area": "이동읍·남사읍",
+    "fleet": 6,
+    "targets": [
+      "이동읍",
+      "남사읍"
+    ],
+    "status": "명칭·관할연결",
+    "allocation": "대상 행정동 균등배분(가상 귀속대수)",
+    "note": "명시 읍면동 연결 또는 읍·면·동 접미사 확장. 전역 운행 여부와 동별 실제 차량 수는 미확인.",
+    "sources": []
+  },
+  {
+    "route_id": "DRT027",
+    "city": "안성시",
+    "area": "금광·미양·서운",
+    "fleet": 3,
+    "targets": [
+      "금광면",
+      "미양면",
+      "서운면"
+    ],
+    "status": "명칭·관할연결",
+    "allocation": "대상 행정동 균등배분(가상 귀속대수)",
+    "note": "명시 읍면동 연결 또는 읍·면·동 접미사 확장. 전역 운행 여부와 동별 실제 차량 수는 미확인.",
+    "sources": []
+  },
+  {
+    "route_id": "DRT028",
+    "city": "안성시",
+    "area": "보개·대덕·고삼",
+    "fleet": 4,
+    "targets": [
+      "보개면",
+      "대덕면",
+      "고삼면"
+    ],
+    "status": "명칭·관할연결",
+    "allocation": "대상 행정동 균등배분(가상 귀속대수)",
+    "note": "명시 읍면동 연결 또는 읍·면·동 접미사 확장. 전역 운행 여부와 동별 실제 차량 수는 미확인.",
+    "sources": []
+  },
+  {
+    "route_id": "DRT029",
+    "city": "안성시",
+    "area": "일죽·죽산·삼죽",
+    "fleet": 4,
+    "targets": [
+      "일죽면",
+      "죽산면",
+      "삼죽면"
+    ],
+    "status": "명칭·관할연결",
+    "allocation": "대상 행정동 균등배분(가상 귀속대수)",
+    "note": "명시 읍면동 연결 또는 읍·면·동 접미사 확장. 전역 운행 여부와 동별 실제 차량 수는 미확인.",
+    "sources": []
+  },
+  {
+    "route_id": "DRT030",
+    "city": "안성시",
+    "area": "공도·원곡·양성",
+    "fleet": 4,
+    "targets": [
+      "공도읍",
+      "원곡면",
+      "양성면"
+    ],
+    "status": "명칭·관할연결",
+    "allocation": "대상 행정동 균등배분(가상 귀속대수)",
+    "note": "명시 읍면동 연결 또는 읍·면·동 접미사 확장. 전역 운행 여부와 동별 실제 차량 수는 미확인.",
+    "sources": []
+  },
+  {
+    "route_id": "DRT031",
+    "city": "이천시",
+    "area": "시내권",
+    "fleet": 14,
+    "targets": [
+      "관고동",
+      "중리동",
+      "창전동",
+      "증포동"
+    ],
+    "status": "후보",
+    "allocation": "대상 행정동 균등배분(가상 귀속대수)",
+    "note": "시내권을 관고·중리·창전·증포 4개 동으로 가정. 제공 시뮬레이션의 현재 귀속 패턴과 동일하나 서비스 경계는 미검증.",
+    "sources": []
+  },
+  {
+    "route_id": "DRT032",
+    "city": "이천시",
+    "area": "신둔면",
+    "fleet": 3,
+    "targets": [
+      "신둔면"
+    ],
+    "status": "명칭·관할연결",
+    "allocation": "대상 행정동 균등배분(가상 귀속대수)",
+    "note": "명시 읍면동 연결 또는 읍·면·동 접미사 확장. 전역 운행 여부와 동별 실제 차량 수는 미확인.",
+    "sources": []
+  },
+  {
+    "route_id": "DRT033",
+    "city": "이천시",
+    "area": "마장면",
+    "fleet": 5,
+    "targets": [
+      "마장면"
+    ],
+    "status": "명칭·관할연결",
+    "allocation": "대상 행정동 균등배분(가상 귀속대수)",
+    "note": "명시 읍면동 연결 또는 읍·면·동 접미사 확장. 전역 운행 여부와 동별 실제 차량 수는 미확인.",
+    "sources": []
+  },
+  {
+    "route_id": "DRT034",
+    "city": "이천시",
+    "area": "율면",
+    "fleet": 3,
+    "targets": [
+      "율면"
+    ],
+    "status": "명칭·관할연결",
+    "allocation": "대상 행정동 균등배분(가상 귀속대수)",
+    "note": "명시 읍면동 연결 또는 읍·면·동 접미사 확장. 전역 운행 여부와 동별 실제 차량 수는 미확인.",
+    "sources": []
+  },
+  {
+    "route_id": "DRT035",
+    "city": "이천시",
+    "area": "장호원읍",
+    "fleet": 7,
+    "targets": [
+      "장호원읍"
+    ],
+    "status": "명칭·관할연결",
+    "allocation": "대상 행정동 균등배분(가상 귀속대수)",
+    "note": "명시 읍면동 연결 또는 읍·면·동 접미사 확장. 전역 운행 여부와 동별 실제 차량 수는 미확인.",
+    "sources": []
+  },
+  {
+    "route_id": "DRT036",
+    "city": "여주시",
+    "area": "흥천면",
+    "fleet": 2,
+    "targets": [
+      "흥천면"
+    ],
+    "status": "명칭·관할연결",
+    "allocation": "대상 행정동 균등배분(가상 귀속대수)",
+    "note": "명시 읍면동 연결 또는 읍·면·동 접미사 확장. 전역 운행 여부와 동별 실제 차량 수는 미확인.",
+    "sources": []
+  },
+  {
+    "route_id": "DRT037",
+    "city": "여주시",
+    "area": "금사면·산북면",
+    "fleet": 2,
+    "targets": [
+      "금사면",
+      "산북면"
+    ],
+    "status": "명칭·관할연결",
+    "allocation": "대상 행정동 균등배분(가상 귀속대수)",
+    "note": "명시 읍면동 연결 또는 읍·면·동 접미사 확장. 전역 운행 여부와 동별 실제 차량 수는 미확인.",
+    "sources": []
+  },
+  {
+    "route_id": "DRT038",
+    "city": "여주시",
+    "area": "가남읍",
+    "fleet": 5,
+    "targets": [
+      "가남읍"
+    ],
+    "status": "명칭·관할연결",
+    "allocation": "대상 행정동 균등배분(가상 귀속대수)",
+    "note": "명시 읍면동 연결 또는 읍·면·동 접미사 확장. 전역 운행 여부와 동별 실제 차량 수는 미확인.",
+    "sources": []
+  },
+  {
+    "route_id": "DRT039",
+    "city": "여주시",
+    "area": "세종대왕면,중앙동,오학동,여흥동",
+    "fleet": 8,
+    "targets": [
+      "세종대왕면",
+      "중앙동",
+      "오학동",
+      "여흥동"
+    ],
+    "status": "명칭·관할연결",
+    "allocation": "대상 행정동 균등배분(가상 귀속대수)",
+    "note": "명시 읍면동 연결 또는 읍·면·동 접미사 확장. 전역 운행 여부와 동별 실제 차량 수는 미확인.",
+    "sources": []
+  },
+  {
+    "route_id": "DRT040",
+    "city": "여주시",
+    "area": "북내면,강천면",
+    "fleet": 2,
+    "targets": [
+      "북내면",
+      "강천면"
+    ],
+    "status": "명칭·관할연결",
+    "allocation": "대상 행정동 균등배분(가상 귀속대수)",
+    "note": "명시 읍면동 연결 또는 읍·면·동 접미사 확장. 전역 운행 여부와 동별 실제 차량 수는 미확인.",
+    "sources": []
+  },
+  {
+    "route_id": "DRT041",
+    "city": "부천시",
+    "area": "고강본동,고강1동",
+    "fleet": 3,
+    "targets": [
+      "고강본동",
+      "고강1동"
+    ],
+    "status": "명칭·관할연결",
+    "allocation": "대상 행정동 균등배분(가상 귀속대수)",
+    "note": "명시 읍면동 연결 또는 읍·면·동 접미사 확장. 전역 운행 여부와 동별 실제 차량 수는 미확인.",
+    "sources": []
+  },
+  {
+    "route_id": "DRT042",
+    "city": "부천시",
+    "area": "옥길동·범박동",
+    "fleet": 4,
+    "targets": [
+      "옥길동",
+      "범박동"
+    ],
+    "status": "명칭·관할연결",
+    "allocation": "대상 행정동 균등배분(가상 귀속대수)",
+    "note": "명시 읍면동 연결 또는 읍·면·동 접미사 확장. 전역 운행 여부와 동별 실제 차량 수는 미확인.",
+    "sources": []
+  },
+  {
+    "route_id": "DRT043",
+    "city": "광명시",
+    "area": "일직동·소하2동",
+    "fleet": 2,
+    "targets": [
+      "일직동",
+      "소하2동"
+    ],
+    "status": "명칭·관할연결",
+    "allocation": "대상 행정동 균등배분(가상 귀속대수)",
+    "note": "명시 읍면동 연결 또는 읍·면·동 접미사 확장. 전역 운행 여부와 동별 실제 차량 수는 미확인.",
+    "sources": []
+  },
+  {
+    "route_id": "DRT044",
+    "city": "광명시",
+    "area": "일직동·학온동",
+    "fleet": 2,
+    "targets": [
+      "일직동",
+      "학온동"
+    ],
+    "status": "명칭·관할연결",
+    "allocation": "대상 행정동 균등배분(가상 귀속대수)",
+    "note": "명시 읍면동 연결 또는 읍·면·동 접미사 확장. 전역 운행 여부와 동별 실제 차량 수는 미확인.",
+    "sources": []
+  },
+  {
+    "route_id": "DRT045",
+    "city": "시흥시",
+    "area": "신천동·매화동",
+    "fleet": 5,
+    "targets": [
+      "신천동",
+      "매화동"
+    ],
+    "status": "명칭·관할연결",
+    "allocation": "대상 행정동 균등배분(가상 귀속대수)",
+    "note": "명시 읍면동 연결 또는 읍·면·동 접미사 확장. 전역 운행 여부와 동별 실제 차량 수는 미확인.",
+    "sources": []
+  },
+  {
+    "route_id": "DRT046",
+    "city": "안양시",
+    "area": "병목안동",
+    "fleet": 2,
+    "targets": [
+      "병목안동"
+    ],
+    "status": "명칭·관할연결",
+    "allocation": "대상 행정동 균등배분(가상 귀속대수)",
+    "note": "명시 읍면동 연결 또는 읍·면·동 접미사 확장. 전역 운행 여부와 동별 실제 차량 수는 미확인.",
+    "sources": [
+      "https://www.anyang.go.kr/main/contents.do?key=289"
+    ]
+  },
+  {
+    "route_id": "DRT047",
+    "city": "의왕시",
+    "area": "초평동·왕송호수공원·의왕역",
+    "fleet": 2,
+    "targets": [
+      "부곡동"
+    ],
+    "status": "명칭·관할연결",
+    "allocation": "대상 행정동 균등배분(가상 귀속대수)",
+    "note": "기존 초평동→부곡동 규칙. 공원·역은 별도 귀속하지 않음. 시뮬레이션의 청계동 귀속을 복제하지 않음.",
+    "sources": [
+      "https://www.uiwang.go.kr/UWKORINTRO0104"
+    ]
+  },
+  {
+    "route_id": "DRT048",
+    "city": "안산시",
+    "area": "대부도 전역",
+    "fleet": 6,
+    "targets": [
+      "대부동"
+    ],
+    "status": "명칭·관할연결",
+    "allocation": "대상 행정동 균등배분(가상 귀속대수)",
+    "note": "기존 대부도→대부동 규칙. 대부동의 모든 섬 운행을 뜻하지 않음.",
+    "sources": [
+      "https://www.ansan.go.kr/danwongu/common/cntnts/selectContents.do?cntnts_id=C0000880",
+      "https://www.ansan.go.kr/stat/common/cntnts/selectContents.do?cntnts_id=C0001013"
+    ]
+  },
+  {
+    "route_id": "DRT049",
+    "city": "안산시",
+    "area": "스마트허브",
+    "fleet": 10,
+    "targets": [
+      "초지동"
+    ],
+    "status": "명칭·관할연결",
+    "allocation": "대상 행정동 균등배분(가상 귀속대수)",
+    "note": "기존 스마트허브→초지동 규칙 사용.",
+    "sources": [
+      "https://smartcity.go.kr/wp-content/uploads/2026/02/안산시-스마트도시계획_26.2.pdf",
+      "https://www.ansan.go.kr/danwongu/common/cntnts/selectContents.do?cntnts_id=C0000914"
+    ]
+  },
+  {
+    "route_id": "DRT050",
+    "city": "수원시",
+    "area": "권선동",
+    "fleet": 3,
+    "targets": [
+      "권선1동",
+      "권선2동"
+    ],
+    "status": "후보",
+    "allocation": "대상 행정동 균등배분(가상 귀속대수)",
+    "note": "권선동→권선1·2동 잠정 후보. 실제 서비스 경계 미검증.",
+    "sources": []
+  },
+  {
+    "route_id": "DRT051",
+    "city": "수원시",
+    "area": "당수동·입북동",
+    "fleet": 9,
+    "targets": [
+      "입북동"
+    ],
+    "status": "명칭·관할연결",
+    "allocation": "대상 행정동 균등배분(가상 귀속대수)",
+    "note": "기존 당수동→입북동 규칙. 동일 행정동 중복 배분 방지.",
+    "sources": [
+      "https://www.suwon.go.kr/sw-www/www05/www05-01/www05-01-08.jsp",
+      "https://www.suwon.go.kr/web/board/BD_board.view.do?bbsCd=1043&seq=20250617144318364"
+    ]
+  },
+  {
+    "route_id": "DRT052",
+    "city": "수원시",
+    "area": "광교1,2동",
+    "fleet": 12,
+    "targets": [
+      "광교1동",
+      "광교2동"
+    ],
+    "status": "명칭·관할연결",
+    "allocation": "대상 행정동 균등배분(가상 귀속대수)",
+    "note": "명시 읍면동 연결 또는 읍·면·동 접미사 확장. 전역 운행 여부와 동별 실제 차량 수는 미확인.",
+    "sources": []
+  },
+  {
+    "route_id": "DRT053",
+    "city": "수원시",
+    "area": "고색·오목천·평리",
+    "fleet": 9,
+    "targets": [
+      "평동"
+    ],
+    "status": "후보",
+    "allocation": "대상 행정동 균등배분(가상 귀속대수)",
+    "note": "고색·오목천·평리→평동. 기존 고색동 규칙 및 제공 시뮬레이션의 평동 귀속을 사용한 잠정 연결.",
+    "sources": [
+      "https://www.suwon.go.kr/sw-www/www05/www05-01/www05-01-08.jsp",
+      "https://www.suwon.go.kr/web/board/BD_board.view.do?bbsCd=1043&seq=20250617144318364"
+    ]
+  },
+  {
+    "route_id": "DRT054",
+    "city": "화성시",
+    "area": "향남읍·팔탄면",
+    "fleet": 3,
+    "targets": [
+      "향남읍",
+      "팔탄면"
+    ],
+    "status": "명칭·관할연결",
+    "allocation": "대상 행정동 균등배분(가상 귀속대수)",
+    "note": "명시 읍면동 연결 또는 읍·면·동 접미사 확장. 전역 운행 여부와 동별 실제 차량 수는 미확인.",
+    "sources": [
+      "https://www.hscity.go.kr/www/user/bbs/BD_selectBbs.do?q_bbsCode=1010&q_bbscttSn=10100001315536"
+    ]
+  },
+  {
+    "route_id": "DRT055",
+    "city": "화성시",
+    "area": "향남지구",
+    "fleet": 5,
+    "targets": [
+      "향남읍"
+    ],
+    "status": "명칭·관할연결",
+    "allocation": "대상 행정동 균등배분(가상 귀속대수)",
+    "note": "기존 향남1·2지구→향남읍 규칙을 향남지구 표기에 적용.",
+    "sources": [
+      "https://www.hscity.go.kr/www/user/bbs/BD_selectBbs.do?q_bbsCode=1010&q_bbscttSn=10100001315536"
+    ]
+  },
+  {
+    "route_id": "DRT056",
+    "city": "화성시",
+    "area": "동탄신도시",
+    "fleet": 20,
+    "targets": [
+      "동탄1동",
+      "동탄2동",
+      "동탄3동",
+      "동탄4동",
+      "동탄5동",
+      "동탄6동",
+      "동탄7동",
+      "동탄8동",
+      "동탄9동"
+    ],
+    "status": "후보",
+    "allocation": "대상 행정동 균등배분(가상 귀속대수)",
+    "note": "기존 동탄신도시 9개 동 후보 유지.",
+    "sources": []
+  },
+  {
+    "route_id": "DRT057",
+    "city": "화성시",
+    "area": "남양읍·마도면",
+    "fleet": 5,
+    "targets": [
+      "남양읍",
+      "마도면"
+    ],
+    "status": "명칭·관할연결",
+    "allocation": "대상 행정동 균등배분(가상 귀속대수)",
+    "note": "명시 읍면동 연결 또는 읍·면·동 접미사 확장. 전역 운행 여부와 동별 실제 차량 수는 미확인.",
+    "sources": []
+  },
+  {
+    "route_id": "DRT058",
+    "city": "화성시",
+    "area": "봉담읍",
+    "fleet": 5,
+    "targets": [
+      "봉담읍"
+    ],
+    "status": "명칭·관할연결",
+    "allocation": "대상 행정동 균등배분(가상 귀속대수)",
+    "note": "명시 읍면동 연결 또는 읍·면·동 접미사 확장. 전역 운행 여부와 동별 실제 차량 수는 미확인.",
+    "sources": []
+  },
+  {
+    "route_id": "DRT059",
+    "city": "평택시",
+    "area": "서탄면",
+    "fleet": 2,
+    "targets": [
+      "서탄면"
+    ],
+    "status": "명칭·관할연결",
+    "allocation": "대상 행정동 균등배분(가상 귀속대수)",
+    "note": "명시 읍면동 연결 또는 읍·면·동 접미사 확장. 전역 운행 여부와 동별 실제 차량 수는 미확인.",
+    "sources": []
+  },
+  {
+    "route_id": "DRT060",
+    "city": "평택시",
+    "area": "현덕면",
+    "fleet": 4,
+    "targets": [
+      "현덕면"
+    ],
+    "status": "명칭·관할연결",
+    "allocation": "대상 행정동 균등배분(가상 귀속대수)",
+    "note": "명시 읍면동 연결 또는 읍·면·동 접미사 확장. 전역 운행 여부와 동별 실제 차량 수는 미확인.",
+    "sources": []
+  },
+  {
+    "route_id": "DRT061",
+    "city": "평택시",
+    "area": "고덕국제신도시",
+    "fleet": 15,
+    "targets": [
+      "고덕동",
+      "고덕면"
+    ],
+    "status": "후보",
+    "allocation": "대상 행정동 균등배분(가상 귀속대수)",
+    "note": "기존 고덕국제신도시 고덕동·고덕면 후보 유지. 시뮬레이션 현재값의 고덕동 15대 단독 귀속을 복제하지 않음.",
+    "sources": [
+      "https://gnews.gg.go.kr/briefing/brief_gongbo_view.do?BS_CODE=S017&number=57039"
+    ]
+  }
+]
