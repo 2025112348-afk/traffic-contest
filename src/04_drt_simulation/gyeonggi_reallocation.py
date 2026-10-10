@@ -1,35 +1,102 @@
 # -*- coding: utf-8 -*-
 """
-경기도 DRT 재배치 시뮬레이션
-"샌드박스 임의배치 267대" vs "이동격차지수 기준 재배치 267대"
+경기도 DRT 재배치 시뮬레이션 (v2)
+"경기교통공사 공식 임의배치" vs "이동격차지수 기준 재배치" 비교
 
 배분 단위: 읍면동(602개)
 배분 방법: 최대잉여법(Largest Remainder Method) — 표준 의석배분(apportionment) 알고리즘
 
-현재 배치(읍면동 단위 귀속) 출처:
-- 1차 소스: 가연 `이동격차지수_3차자료/drt_boundary_mapping/경기도_경계기준_DRT비교.csv`의
-  "운행구역에 읍면동 명시"(확인) 53개 — data/raw/경기도_똑버스_운행현황.csv 공식 46개
-  운행구역을 admdongkor 602개 경계와 신중하게 대조한 결과(운행구역 명칭과 읍면동 명칭이
-  정확히 일치하는 것만 확인 처리).
-- 2차 보강: 은규가 만든 경기도_DRT_종합.xlsx(318행 전국 DRT 데이터셋 기반)와 교차검증해
-  2건을 추가함(admdongkor 602개 목록에 실존함을 직접 대조로 확인, 318행 데이터셋에
-  뉴스 출처도 있음) — 평택시 고덕동(고덕국제신도시 15대), 파주시 교하동(운정신도시·
-  교하지구 15대). 나머지 7건(고양시 덕은동·향동동, 안산시 목내동·성곡동·원시동,
-  안양시 안양9동, 의정부시 민락동)은 admdongkor 602개 실제 행정동 목록에 없는 표기로
-  확인되어 기각함(예: 안양시만안구는 안양1~7동까지만 존재, 안양9동은 없음).
+현재 배치(읍면동 단위 귀속) 출처 — v2:
+- 경기교통공사(gtrans.or.kr) "시군별 버스대수" 공식 페이지(2026-10-10 캡처).
+  총 312대, 21개 시군 60개 운행구역(이천시내권 미확보로 추가 확인 중 — 확정되면
+  총량 갱신 필요).
+- v1에서 쓰던 data/raw/경기도_똑버스_운행현황.csv(267대, 19개 시군, "경기도
+  공식 DRT 운행현황" 캡처 2장을 손으로 옮긴 것)보다 신뢰도가 높음: 시군별
+  "운행구역/운행대수/운행차량" 1차 소스이고, 이천시내권 제외 총량(312대)이
+  2026년 1월 뉴스 보도치(311대)와 거의 일치해 시점 신선도도 교차검증됨.
+- 원본: data/raw/경기교통공사_똑버스_운행현황_20261010.csv
 
-자세한 비교 과정은 같은 폴더의 `경기도_DRT_재배치_기록.md`를 참고.
+운행구역 -> 읍면동 매핑 신뢰도 3단계(아래 ZONE_MAPPING의 confidence):
+- 확인: 운행구역명의 각 토큰이 admdongkor 602개 행정동과 정확히 1:1 일치
+  (예: "고강본동,고강1동" -> 고강본동 + 고강1동).
+- 후보: 신도시/통합권역명이라 여러 읍면동에 걸쳐 있어 해당 대수를 후보
+  읍면동에 균등분배로 추정(예: "동탄신도시" 20대 -> 동탄1~9동에 각 2.22대).
+  가연의 경계변환_결과.md "추가 확인이 필요한 운행구역" 표의 후보 목록을
+  그대로 이어받았거나, 같은 방식으로 새로 추정함.
+- 미확인: 근거 부족으로 귀속하지 않음(고양시 고봉동·식사동·향동동, 광주시
+  태전동·고산동, 안산시 스마트허브 — 총 26대, 312대 중 귀속 성공은 286대).
+
+자세한 과정은 같은 폴더의 `경기도_DRT_재배치_기록.md`를 참고.
 """
 import pandas as pd
 import numpy as np
 
 BOUNDARY_PATH = "이동격차지수_3차자료/drt_boundary_mapping/경기도_경계기준_DRT비교.csv"
-OFFICIAL_PATH = "data/raw/경기도_똑버스_운행현황.csv"
-TOTAL_N = 267  # 경기도 똑버스 실제 총 운행대수(현재 샌드박스 등으로 임의배치된 현황)
+OFFICIAL_PATH = "data/raw/경기교통공사_똑버스_운행현황_20261010.csv"
+TOTAL_N = 312  # 경기교통공사 공식 "시군별 버스대수" 합계(이천시내권 미포함, 2026-10-10 기준)
 
-VERIFIED_ADDITIONS = [
-    ("경기도 평택시 고덕동", "고덕국제신도시"),
-    ("경기도 파주시 교하동", "운정신도시·교하지구"),
+# (sggnm, 운행구역, 운행대수, [매칭 읍면동], 신뢰도)
+ZONE_MAPPING = [
+    ("연천군", "연천읍·내산리", 2, ["연천읍"], "확인"),
+    ("파주시", "운정4동", 3, ["운정4동"], "확인"),
+    ("파주시", "광탄면", 3, ["광탄면"], "확인"),
+    ("파주시", "탄현면", 3, ["탄현면"], "확인"),
+    ("파주시", "운정1,2,3지구 및 교하지구", 15, ["교하동", "운정1동", "운정2동", "운정3동"], "후보"),
+    ("양주시", "장흥면", 4, ["장흥면"], "확인"),
+    ("양주시", "백석읍·광적면·양주역", 4, ["백석읍", "광적면"], "후보"),
+    ("양주시", "은현·남면·덕정역", 3, ["은현면", "남면"], "후보"),
+    ("양주시", "옥정신도시,회천지구,삼숭동 및 덕계역", 15, ["옥정1동", "옥정2동", "회천1동", "회천2동", "회천3동"], "후보"),
+    ("김포시", "고촌·풍무", 10, ["고촌읍", "풍무동"], "확인"),
+    ("고양시덕양구", "덕은동", 3, ["화전동"], "후보"),
+    ("고양시덕양구", "고봉동", 3, [], "미확인"),
+    ("고양시일산동구", "식사동", 4, [], "미확인"),
+    ("고양시덕양구", "향동동", 4, [], "미확인"),
+    ("의정부시", "민락2·고산지구", 4, ["송산3동", "고산동"], "후보"),
+    ("의정부시", "민락1지구", 4, ["송산1동", "송산2동"], "후보"),
+    ("하남시", "하남 감일지구", 5, ["감일동"], "확인"),
+    ("하남시", "하남 위례지구", 4, ["위례동"], "확인"),
+    ("광주시", "태전동·고산동", 5, [], "미확인"),
+    ("광주시", "탄벌동·장지동", 4, ["탄벌동"], "후보"),
+    ("광주시", "곤지암읍", 5, ["곤지암읍"], "확인"),
+    ("광주시", "도척면", 5, ["도척면"], "확인"),
+    ("광주시", "초월읍", 6, ["초월읍"], "확인"),
+    ("광주시", "퇴촌면·남종면", 4, ["퇴촌면", "남종면"], "확인"),
+    ("용인시처인구", "모현읍", 4, ["모현읍"], "확인"),
+    ("용인시처인구", "이동읍·남사읍", 6, ["이동읍", "남사읍"], "확인"),
+    ("안성시", "금광·미양·서운", 3, ["금광면", "미양면", "서운면"], "확인"),
+    ("안성시", "보개·대덕·고삼", 4, ["보개면", "대덕면", "고삼면"], "확인"),
+    ("안성시", "일죽·죽산·삼죽", 4, ["일죽면", "죽산면", "삼죽면"], "확인"),
+    ("안성시", "공도·원곡·양성", 4, ["공도읍", "원곡면", "양성면"], "확인"),
+    ("이천시", "신둔면", 3, ["신둔면"], "확인"),
+    ("이천시", "마장면", 5, ["마장면"], "확인"),
+    ("이천시", "율면", 3, ["율면"], "확인"),
+    ("이천시", "장호원읍", 7, ["장호원읍"], "확인"),
+    ("여주시", "흥천면", 2, ["흥천면"], "확인"),
+    ("여주시", "금사면·산북면", 2, ["금사면", "산북면"], "확인"),
+    ("여주시", "가남읍", 5, ["가남읍"], "확인"),
+    ("여주시", "세종대왕면,중앙동,오학동,여흥동", 8, ["세종대왕면", "중앙동", "오학동", "여흥동"], "확인"),
+    ("여주시", "북내면,강천면", 2, ["북내면", "강천면"], "확인"),
+    ("부천시오정구", "고강본동,고강1동", 3, ["고강본동", "고강1동"], "확인"),
+    ("부천시소사구", "옥길동·범박동", 4, ["옥길동", "범박동"], "확인"),
+    ("광명시", "일직동·소하2동", 2, ["일직동", "소하2동"], "확인"),
+    ("광명시", "일직동·학온동", 2, ["일직동", "학온동"], "확인"),
+    ("시흥시", "신천동·매화동", 5, ["신천동", "매화동"], "확인"),
+    ("안양시만안구", "병목안동", 2, ["병목안동"], "확인"),
+    ("의왕시", "초평동·왕송호수공원·의왕역", 2, ["청계동"], "후보"),
+    ("안산시단원구", "대부도 전역", 6, ["대부동"], "확인"),
+    ("안산시단원구", "스마트허브", 10, [], "미확인"),
+    ("수원시권선구", "권선동", 3, ["권선1동", "권선2동"], "후보"),
+    ("수원시권선구", "당수동·입북동", 9, ["입북동"], "후보"),
+    ("수원시영통구", "광교1,2동", 12, ["광교1동", "광교2동"], "확인"),
+    ("수원시권선구", "고색·오목천·평리", 9, ["평동"], "후보"),
+    ("화성시만세구", "향남읍·팔탄면", 3, ["향남읍", "팔탄면"], "확인"),
+    ("화성시만세구", "향남지구", 5, ["향남읍"], "후보"),
+    ("화성시동탄구", "동탄신도시", 20, ["동탄1동", "동탄2동", "동탄3동", "동탄4동", "동탄5동", "동탄6동", "동탄7동", "동탄8동", "동탄9동"], "후보"),
+    ("화성시만세구", "남양읍·마도면", 5, ["남양읍", "마도면"], "확인"),
+    ("화성시효행구", "봉담읍", 5, ["봉담읍"], "확인"),
+    ("평택시", "서탄면", 2, ["서탄면"], "확인"),
+    ("평택시", "현덕면", 4, ["현덕면"], "확인"),
+    ("평택시", "고덕국제신도시", 15, ["고덕동"], "확인"),
 ]
 
 
@@ -43,7 +110,7 @@ def largest_remainder(weights: pd.Series, total: int) -> pd.Series:
     share = weights / weights.sum() * total
     floor_alloc = np.floor(share).astype(int)
     remainder = share - floor_alloc
-    n_remaining = total - floor_alloc.sum()
+    n_remaining = int(total - floor_alloc.sum())
     add_idx = remainder.sort_values(ascending=False).index[:n_remaining]
     alloc = floor_alloc.copy()
     alloc.loc[add_idx] += 1
@@ -51,54 +118,34 @@ def largest_remainder(weights: pd.Series, total: int) -> pd.Series:
     return alloc
 
 
-def build_current_allocation(boundary: pd.DataFrame, official: pd.DataFrame) -> pd.Series:
-    """55개 확인된 읍면동에 현재 운행대수를 귀속시킨다.
-    한 운행구역에 여러 읍면동이 확인되면 그 구역 운행대수를 확인된 읍면동 수로 균등 배분한다."""
-    zone_vehicle_map = official.set_index("운행구역")["운행대수_숫자"].to_dict()
-
-    confirmed = boundary[boundary["DRT대조결과"] == "운행구역에 읍면동 명시"].copy()
-
-    add_rows = []
-    for key, zone in VERIFIED_ADDITIONS:
-        row = boundary[boundary["읍면_key"] == key].iloc[0].copy()
-        row["DRT대조결과"] = "운행구역에 읍면동 명시(은규 318행 데이터셋 교차검증으로 추가)"
-        row["일치_운행구역"] = zone
-        add_rows.append(row)
-    confirmed = pd.concat([confirmed, pd.DataFrame(add_rows)], ignore_index=True)
-
-    confirmed["_zones"] = confirmed["일치_운행구역"].str.split(" / ")
-    exploded = confirmed.explode("_zones").rename(columns={"_zones": "zone"})
-    exploded["zone"] = exploded["zone"].str.strip()
-    exploded["_zone_count"] = exploded.groupby("zone")["emdnm"].transform("count")
-
-    def lookup_zone_vehicle(zone_name):
-        if zone_name in zone_vehicle_map:
-            return zone_vehicle_map[zone_name]
-        for k, v in zone_vehicle_map.items():
-            if zone_name.replace(" ", "") == k.replace(" ", ""):
-                return v
-        return None
-
-    exploded["_zone_vehicle_total"] = exploded["zone"].apply(lookup_zone_vehicle)
-    exploded = exploded.dropna(subset=["_zone_vehicle_total"])
-    exploded["_귀속대수"] = exploded["_zone_vehicle_total"] / exploded["_zone_count"]
-    return exploded.groupby("읍면_key")["_귀속대수"].sum().rename("현재_귀속대수")
+def build_current_allocation(boundary: pd.DataFrame) -> pd.DataFrame:
+    """ZONE_MAPPING을 읍면동 단위로 explode하고, 한 읍면동이 여러 운행구역에
+    걸치면 합산한다. 신뢰도는 여러 출처 중 가장 낮은 단계(확인<후보)로 표기."""
+    conf_rank = {"확인": 0, "후보": 1, "미확인": 2}
+    exploded = []
+    for sgg, zone, n, emds, conf in ZONE_MAPPING:
+        if not emds:
+            continue
+        per = n / len(emds)
+        for e in emds:
+            exploded.append({"sggnm": sgg, "emdnm": e, "_귀속대수": per, "_rank": conf_rank[conf], "운행구역": zone})
+    exp = pd.DataFrame(exploded)
+    agg = exp.groupby(["sggnm", "emdnm"]).agg(
+        현재_귀속대수=("_귀속대수", "sum"),
+        신뢰도=("_rank", "min"),
+        운행구역=("운행구역", lambda x: " / ".join(sorted(set(x)))),
+    ).reset_index()
+    agg["신뢰도"] = agg["신뢰도"].map({v: k for k, v in conf_rank.items()})
+    return boundary.merge(agg, on=["sggnm", "emdnm"], how="left").assign(
+        현재_귀속대수=lambda d: d["현재_귀속대수"].fillna(0)
+    )
 
 
-def run(boundary_path: str = BOUNDARY_PATH, official_path: str = OFFICIAL_PATH, total_n: int = TOTAL_N):
+def run(boundary_path: str = BOUNDARY_PATH, total_n: int = TOTAL_N):
     boundary = pd.read_csv(boundary_path)
-    official = pd.read_csv(official_path)
-    official = official[official["지자체"] != "계"].copy()
-    official["운행대수_숫자"] = official["운행대수"].str.replace("대", "").astype(int)
-    assert official["운행대수_숫자"].sum() == total_n
-
-    current_alloc = build_current_allocation(boundary, official)
-
-    boundary = boundary.sort_values("이동격차지수", ascending=False).reset_index(drop=True)
-    boundary["재배치_대수"] = largest_remainder(boundary["이동격차지수"], total_n).values
-
-    result = boundary.merge(current_alloc, on="읍면_key", how="left")
-    result["현재_귀속대수"] = result["현재_귀속대수"].fillna(0)
+    result = build_current_allocation(boundary)
+    result = result.sort_values("이동격차지수", ascending=False).reset_index(drop=True)
+    result["재배치_대수"] = largest_remainder(result["이동격차지수"], total_n).values
     return result
 
 
@@ -107,12 +154,11 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--boundary", default=BOUNDARY_PATH)
-    parser.add_argument("--official", default=OFFICIAL_PATH)
     parser.add_argument("--total", type=int, default=TOTAL_N)
     parser.add_argument("--out", default="경기도_재배치_시뮬레이션_결과.csv")
     args = parser.parse_args()
 
-    result = run(args.boundary, args.official, args.total)
-    out_cols = ["읍면_key", "sidonm", "sggnm", "emdnm", "이동격차지수", "재배치_대수", "현재_귀속대수", "DRT대조결과"]
+    result = run(args.boundary, args.total)
+    out_cols = ["읍면_key", "sidonm", "sggnm", "emdnm", "이동격차지수", "재배치_대수", "현재_귀속대수", "신뢰도", "DRT대조결과"]
     result[out_cols].to_csv(args.out, index=False, encoding="utf-8-sig")
-    print(f"저장 완료: {args.out} ({len(result)}개 읍면동)")
+    print(f"저장 완료: {args.out} ({len(result)}개 읍면동, 귀속 {result['현재_귀속대수'].sum():.1f}/{args.total}대)")
