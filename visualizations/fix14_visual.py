@@ -1,6 +1,0 @@
-﻿from pathlib import Path
-import pandas as pd,geopandas as gpd,matplotlib
-matplotlib.use('Agg'); import matplotlib.pyplot as plt
-from matplotlib import font_manager
-root=Path('.'); fp=font_manager.FontProperties(fname=r'C:\Windows\Fonts\malgun.ttf'); plt.rcParams['font.family']='Malgun Gothic'
-a=pd.read_csv(root/'visualizations/14_dong_supply/dong_supply.csv'); a['BJCD']=a.BJCD.astype(str).str.replace(r'\.0$','',regex=True).str.zfill(10); poly=gpd.read_file('N3A_G0110000.shp',encoding='euc-kr').set_crs(5179,allow_override=True)[['BJCD','geometry']]; poly['BJCD']=poly.BJCD.astype(str).str.zfill(10); m=poly.merge(a[['BJCD','per_10k']],on='BJCD',how='left'); lo,hi=m.per_10k.quantile([.02,.98]); m['plotval']=m.per_10k.clip(lo,hi); fig,ax=plt.subplots(figsize=(13,13)); m.plot(column='plotval',cmap='YlOrRd',linewidth=.12,edgecolor='white',legend=True,ax=ax,missing_kwds={'color':'#eeeeee'},legend_kwds={'label':'','shrink':.55}); ax.set_title('읍면동별 평일 버스 공급량',fontproperties=fp,fontsize=22,weight='bold'); fig.text(.985,.5,'정류장 1곳당 평일 운행횟수',fontproperties=fp,fontsize=11,rotation=90,ha='center',va='center'); ax.axis('off'); fig.tight_layout(rect=[0,0,.96,1]); fig.savefig(root/'visualizations/14_dong_supply/dong_supply_map.png',dpi=240,bbox_inches='tight')
