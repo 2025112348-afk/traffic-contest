@@ -2,9 +2,9 @@ pandas
 numpy
 scipy
 geopandas
+rasterio
+rasterstats
 shapely
-folium
 matplotlib
-scikit-learn
 openpyxl
 requests

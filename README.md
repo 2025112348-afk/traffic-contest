@@ -32,9 +32,10 @@
 ├── DRT_버스형_읍면동/, DRT_버스형_읍면동.zip   팀 자체 구축 DRT 운행 읍면동 현황 (신뢰도 상/중/하)
 ├── visualizations/                             보고서 삽입 그림의 소스 코드 (01_od_2024, 10_stop_supply_index, 11_car_map, 14_dong_supply)
 └── outputs/
-    ├── figures/                                최종 지도 (medical/, terrain/)
-    └── tables/                                  최종 지수 테이블(csv)
+    └── figures/                                최종 지도 (medical/, terrain/)
 ```
+
+최종 이동격차지수 테이블(csv)은 `outputs/tables/`가 아니라 `이동격차지수_3차자료/gyeonggi_drt_comparison/전국_최종지수_재계산.csv`와 `이동격차지수_상하위배수_검증_20261011/코드/data/eupmyeon_master_3차.csv`에 있습니다.
 
 ## 분석 과정 및 방법
 
@@ -64,6 +65,7 @@
 
 ```bash
 pip install -r requirements.txt
+# 지형장벽(경사도) 계산에는 GDAL 커맨드라인 도구(gdaldem)가 별도로 필요합니다 (예: apt install gdal-bin).
 
 python src/01_collect/*.py                                      # 원자료 수집
 python src/02_preprocess/*.py                                    # 행정구역 매칭·정제
