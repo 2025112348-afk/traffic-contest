@@ -73,8 +73,5 @@ jupyter nbconvert --execute 이동격차지수_3차자료/Traffic_entropy_final.
 python src/04_drt_simulation/gyeonggi_reallocation.py            # 경기도 DRT 재배치 시뮬레이션
 python DRT_반영_이동격차지수_비교_20261010/run_comparison.py      # 현재 vs 재배치 반영 지수 비교
 python 이동격차지수_상하위배수_검증_20261011/코드/validation_sido_20pct.py  # 상·하위 배수 검증
-```
+``
 
-## 한계
-
-기획 단계에서 검토했던 가구통행실태조사 O/D·생활이동데이터(KTDB·data.molit.go.kr), 온실가스 배출량 데이터, 탄소감축 효과 정량화는 실제로 쓰지 않았습니다. 최종 보고서의 탄소중립 관련 내용은 "DRT가 승용차보다 인원당 배출량이 낮다"는 정성적 서술에 그치며, 별도의 배출량 계산은 수행하지 않았습니다.
