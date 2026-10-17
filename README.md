@@ -16,7 +16,6 @@
 
 ```
 .
-├── docs/                                       지형장벽 방법론
 ├── data/
 │   ├── raw/                                    원본 데이터 (용량 큰 일부는 git 미포함, data/README.md 참고)
 │   └── processed/                              지표 계산용으로 정제된 데이터셋 (medical/, terrain/)
